@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
     [Header("Velocity")]
     [SerializeField] [Min(0)] private float groundSpeed = 2;
-    [SerializeField] [Min(0)] private float airSpeed = 1;
     [SerializeField] [Min(0)] private float swimSpeed = 1;
+    [SerializeField] [Min(0)] private float airSpeed = 1;
     [SerializeField] [Min(0)] private float airDrag = 1;
+    [SerializeField] [Min(0)] private float airGain = 1;
     [Header("Jump")]
     [SerializeField] [Min(0)] private float jumpHeight = 2;
     [SerializeField] [Min(0)] private float jumpCooldown = 1;
@@ -24,8 +26,11 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector3 saveGroundCheckOffsetRight = Vector3.right;
     [SerializeField] private Vector3 saveGroundCheckOffsetLeft = Vector3.left;
     [SerializeField] private Vector3 saveGroundCheckHalfSize = Vector3.one;
-    [Header("Camera")]
-    [SerializeField] private Vector3 cameraOffset = new Vector3(0, -10, 0);
+    [SerializeField] private Vector3 spawnPosition = new Vector3(0, 0.5f, 0);
+    [SerializeField] private float spawnHeightCheckOffset = 3;
+    [SerializeField] private Vector3 cameraSpawnOffset = new Vector3(0, 2.1f, -10);
+
+    public UnityEvent onDeath = new UnityEvent();
 
     private new Rigidbody rigidbody;
     private float jumpTimer = 0;
@@ -69,19 +74,39 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
-        CameraController.instance.SetDestination(transform.position + cameraOffset);
     }
 
-    private void Update()
+    private void Start()
     {
-        if (Gamemanager.instance.PlayerMovementBlocked)
+        onDeath.AddListener(GameManager.instance.GameOver);
+        Respawn();
+    }
+
+    public void Respawn()
+    {
+        RaycastHit[] hits = Physics.RaycastAll(spawnPosition + Vector3.up * spawnHeightCheckOffset, Vector3.down, spawnHeightCheckOffset * 2, groundLayers);
+        Vector3 position = spawnPosition;
+        if(hits.Length > 0)
+        {
+            position = hits[0].point;
+        }
+
+        this.transform.position = position;
+        Camera.main.transform.position = cameraSpawnOffset;
+    }
+
+    public void UpdateLogic()
+    {
+        if (GameManager.instance.PlayerMovementBlocked)
+        {
+            rigidbody.Sleep();
             return;
+        }
         AirCheck();
         Jump();
         AirJump();
         MoveForwardBackward();
         CheckForSaveGround();
-        CameraController.instance.SetDestination(transform.position + cameraOffset + rigidbody.velocity.normalized * 2);
     }
 
     private void Jump()
@@ -95,7 +120,7 @@ public class Player : MonoBehaviour
         if (jumpTimer > 0)
             return;
 
-        if (Gamemanager.instance.input.Jump())
+        if (InputManager.instance.Jump())
         {
             rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
             jumpTimer += jumpCooldown;
@@ -116,7 +141,7 @@ public class Player : MonoBehaviour
         if (airJumpsUsed >= airJumps)
             return;
 
-        if (Gamemanager.instance.input.Jump())
+        if (InputManager.instance.Jump())
         {
             airJumpsUsed++;
             rigidbody.AddForce(new Vector3(0, airJumpHeight + Mathf.Clamp(rigidbody.velocity.y * -1, 0 , 10), 0), ForceMode.Impulse);
@@ -127,30 +152,29 @@ public class Player : MonoBehaviour
     private void MoveForwardBackward()
     {
         float velocity = 0;
+        int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();
         switch (state)
         {
             case State.OnGround:
-                velocity += groundSpeed * Gamemanager.instance.input.MoveRight();
-                velocity += groundSpeed * Gamemanager.instance.input.MoveLeft();
-                rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+                velocity = groundSpeed * direction;        
                 break;
             case State.InAir:
-                velocity += airSpeed * Gamemanager.instance.input.MoveRight();
-                velocity += airSpeed * Gamemanager.instance.input.MoveLeft();
-                rigidbody.AddForce(new Vector3(velocity * Time.deltaTime, 0, 0), ForceMode.Force);
-                if (rigidbody.velocity.x > 0)
-                    rigidbody.velocity = new Vector3(Mathf.Clamp(rigidbody.velocity.x - airDrag * Time.deltaTime, 0, float.MaxValue), rigidbody.velocity.y, 0);
-                if (rigidbody.velocity.x < 0)
-                    rigidbody.velocity = new Vector3(Mathf.Clamp(rigidbody.velocity.x + airDrag * Time.deltaTime, float.MinValue, 0), rigidbody.velocity.y, 0);
+                if(direction == 0)
+                {
+                    velocity = rigidbody.velocity.x - Mathf.Clamp(rigidbody.velocity.x, -1, 1) * airDrag * Time.deltaTime;
+                }
+                else
+                {
+                    velocity = Mathf.Clamp(rigidbody.velocity.x + airGain * Time.deltaTime * direction, -airSpeed, airSpeed);
+                }
                 break;
             case State.InWater:
-                velocity += swimSpeed * Gamemanager.instance.input.MoveRight();
-                velocity += swimSpeed * Gamemanager.instance.input.MoveLeft();
-                rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+                velocity = swimSpeed * direction;
                 break;
             default:
                 break;
         }
+        rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
     }
 
     private void AirCheck()
@@ -171,6 +195,7 @@ public class Player : MonoBehaviour
     {
         rigidbody.velocity = Vector3.zero;
         transform.position = lastSaveGroundPosition + new Vector3(0, 0.5f, 0);
+        onDeath.Invoke();
     }
 
     private void OnDrawGizmos()

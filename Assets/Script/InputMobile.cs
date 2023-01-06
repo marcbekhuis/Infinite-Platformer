@@ -7,6 +7,8 @@ public class InputMobile : InputBase
     private Dictionary<int, JumpTouch> jumpTouchStartPosition = new Dictionary<int, JumpTouch>();
     private float jumpTriggerDistance = 1;
 
+    private List<bool> positionUI = new List<bool>();
+
     public InputMobile()
     {
         jumpTriggerDistance = Screen.height / 4f;
@@ -24,11 +26,22 @@ public class InputMobile : InputBase
         }
     }
 
+    public void UiCheck()
+    {
+        positionUI.Clear();
+        foreach (var touch in Input.touches)
+        {
+            positionUI.Add(UiDetection.instance.CheckOnUI(touch.position));
+        }
+    }
 
     public override bool Jump()
     {
-        foreach (var touch in Input.touches)
+        for (int i = 0; i < Input.touchCount; i++)
         {
+            Touch touch = Input.touches[i];
+            if (positionUI[i])
+                continue;
             switch (touch.phase)
             {
                 case TouchPhase.Began:
@@ -68,8 +81,11 @@ public class InputMobile : InputBase
 
     public override int MoveLeft()
     {
-        foreach (var touch in Input.touches)
+        for (int i = 0; i < Input.touchCount; i++)
         {
+            Touch touch = Input.touches[i];
+            if (positionUI[i])
+                continue;
             switch (touch.phase)
             {
                 case TouchPhase.Began:
@@ -93,8 +109,11 @@ public class InputMobile : InputBase
 
     public override int MoveRight()
     {
-        foreach (var touch in Input.touches)
+        for (int i = 0; i < Input.touchCount; i++)
         {
+            Touch touch = Input.touches[i];
+            if (positionUI[i])
+                continue;
             switch (touch.phase)
             {
                 case TouchPhase.Began:

@@ -12,6 +12,6 @@ public class SettingsSystem : Singleton<SettingsSystem>
 
     private void Start()
     {
-        Application.targetFrameRate = Screen.currentResolution.refreshRate + 10;
+        //Application.targetFrameRate = Screen.currentResolution.refreshRate + 10;
     }
 }

@@ -2,29 +2,59 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Gamemanager : Singleton<Gamemanager>
+public class GameManager : Singleton<GameManager>
 {
-    [HideInInspector] public InputBase input;
+    [SerializeField] private Player player;
+
     [HideInInspector] public bool gamePaused = false;
+    [HideInInspector] public bool gameEnded = false;
+
+    public bool PlayerMovementBlocked { get => gamePaused || gameEnded; }
 
     private void Start()
     {
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
-            input = new InputMobile();
-        else
-            input = new InputPC();
+        MainMenu();
     }
 
     private void Update()
     {
-#if UNITY_EDITOR
-        if (UnityEditor.EditorApplication.isRemoteConnected && input.GetType() != typeof(InputMobile))
-        {
-            input = new InputMobile();
-            return;
-        }
-#endif
+        InputManager.instance.Uicheck();
+        player.UpdateLogic();
     }
 
-    public bool PlayerMovementBlocked { get => gamePaused; }
+    public void MainMenu()
+    {
+        gameEnded = false;
+        gamePaused = true;
+        UiManager.instance.ShowMainMenu();
+    }
+
+    public void Play()
+    {
+        gamePaused = false;
+        gameEnded = false;
+        UiManager.instance.ShowGameUI();
+    }
+
+    public void TogglePause()
+    {
+        gamePaused = !gamePaused;
+        if (gamePaused)
+            UiManager.instance.ShowPauseMenu();
+        else 
+            UiManager.instance.ShowGameUI();
+    }
+
+    public void GameOver()
+    {
+        gameEnded = true;
+        UiManager.instance.ShowGameOverMenu();
+    }
+
+    public void ContinueGame()
+    {
+        gamePaused = false;
+        gameEnded = false;
+        UiManager.instance.ShowGameUI();
+    }
 }

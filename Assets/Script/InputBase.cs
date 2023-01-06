@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class InputBase : MonoBehaviour
+public abstract class InputBase
 {
     public abstract bool Jump();
 

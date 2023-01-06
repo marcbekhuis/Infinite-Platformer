@@ -6,7 +6,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     public static T instance;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         if (instance != null) Destroy(this);
         else instance = FindObjectOfType<T>();

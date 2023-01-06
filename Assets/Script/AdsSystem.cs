@@ -3,83 +3,105 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdsSystem : Singleton<AdsSystem>, IUnityAdsShowListener
+public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsInitializationListener
 {
     [SerializeField] private int timeBetweenAds = 300;
     [SerializeField] private string androidGameID = "4459541";
     [SerializeField] private string iosGameID = "4459540";
-    private float timeOfLastAd = 0;
-    private string platform = "";
+    [SerializeField] private bool testMode = false;
+    private string _gameId;
 
-    public event RewardAdFinished onRewardAdFinished = delegate { };
-    public delegate void RewardAdFinished();
+    [SerializeField] private string _androidAdUnitId = "Interstitial_Android";
+    [SerializeField] private string _iosAdUnitId = "Interstitial_iOS";
+    public string _adUnitId { get; private set; }
+    [SerializeField] private string _rewardAndroidAdUnitId = "Rewarded_Android";
+    [SerializeField] private string _rewardIosAdUnitId = "Rewarded_iOS";
+    public string _rewardAdUnitId { get;  private set; }
 
-    private void Awake()
+    public delegate void AdComplited();
+    public event AdComplited onRewardComplited = delegate { };
+    public event AdComplited onAdComplited = delegate { };
+
+    protected override void Awake()
     {
         base.Awake();
-        DontDestroyOnLoad(this);
-    }
-
-    private void Start()
-    {
-        if (!Advertisement.isInitialized)
+        if (instance == this)
         {
-            if (Application.platform == RuntimePlatform.Android)
-            {
-                Advertisement.Initialize(androidGameID);
-                platform = "_Android";
-            }
-            else
-            {
-                Advertisement.Initialize(iosGameID);
-                platform = "_iOS";
-            }
+            DontDestroyOnLoad(this);
+            InitializeAds();
         }
     }
 
-    public void ShowTimedAd()
+    public void InitializeAds()
     {
-        if (Advertisement.isShowing)
-            return;
-        if (Time.time < timeOfLastAd + timeBetweenAds)
-            return;
-        if (!Advertisement.IsReady("Interstitial" + platform))
-            return;
-        Advertisement.Show("Interstitial" + platform);
-        timeOfLastAd = Time.time;
+        _gameId = (Application.platform == RuntimePlatform.IPhonePlayer)
+            ? iosGameID
+            : androidGameID;
+        Advertisement.Initialize(_gameId, testMode, this);
+        _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
+            ? _iosAdUnitId
+            : _androidAdUnitId;
+        _rewardAdUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
+            ? _rewardIosAdUnitId
+            : _rewardAndroidAdUnitId;
     }
 
-    public void RewardAd()
+    public void OnInitializationComplete()
     {
-        if (Advertisement.isShowing)
-            return;
-        if (!Advertisement.IsReady("Rewarded" + platform))
-            return;
-        Advertisement.Show("Rewarded" + platform);
-        timeOfLastAd = Time.time;
+        Debug.LogError("Unity Ads initialization complete.");
     }
 
-    public void OnUnityAdsShowFailure(string placementId, UnityAdsShowError error, string message)
+    public void OnInitializationFailed(UnityAdsInitializationError error, string message)
     {
+        Debug.LogError($"Unity Ads Initialization Failed: {error.ToString()} - {message}");
     }
 
-    public void OnUnityAdsShowStart(string placementId)
+    // Load content to the Ad Unit:
+    public void LoadAd(string adUnitId)
     {
+        // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
+        Debug.LogError("Loading Ad: " + adUnitId);
+        Advertisement.Load(adUnitId, this);
     }
 
-    public void OnUnityAdsShowClick(string placementId)
+    // Show the loaded content in the Ad Unit:
+    private void ShowAd(string adUnitId)
     {
+        // Note that if the ad content wasn't previously loaded, this method will fail
+        Debug.LogError("Showing Ad: " + adUnitId);
+        Advertisement.Show(adUnitId, this);
     }
 
-    public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
+    // Implement Load Listener and Show Listener interface methods: 
+    public void OnUnityAdsAdLoaded(string adUnitId)
     {
+        // Optionally execute code if the Ad Unit successfully loads content.
+        ShowAd(adUnitId);
+    }
+
+    public void OnUnityAdsFailedToLoad(string adUnitId, UnityAdsLoadError error, string message)
+    {
+        Debug.LogError($"Error loading Ad Unit: {adUnitId} - {error.ToString()} - {message}");
+        // Optionally execute code if the Ad Unit fails to load, such as attempting to try again.
+    }
+
+    public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
+    {
+        Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
+        // Optionally execute code if the Ad Unit fails to show, such as loading another ad.
+    }
+
+    public void OnUnityAdsShowStart(string adUnitId) { }
+    public void OnUnityAdsShowClick(string adUnitId) { }
+    public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) 
+    {
+        onAdComplited();
         switch (showCompletionState)
         {
             case UnityAdsShowCompletionState.SKIPPED:
                 break;
             case UnityAdsShowCompletionState.COMPLETED:
-                onRewardAdFinished();
-                onRewardAdFinished = delegate { };
+                onRewardComplited();
                 break;
             case UnityAdsShowCompletionState.UNKNOWN:
                 break;
