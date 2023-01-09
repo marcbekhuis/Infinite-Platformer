@@ -2,7 +2,11 @@ Using pre-set license
 Built from '2022.1/staging' branch; Version is '2022.1.22f1 (6b6e9fc2adda) revision 7040671'; Using compiler version '192829333'; Build Type 'Release'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 OS: 'Windows 11  (10.0.22621) 64bit Professional' Language: 'nl' Physical Memory: 32670 MB
+=======
+OS: 'Windows 10  (10.0.19044) 64bit Professional' Language: 'nl' Physical Memory: 32715 MB
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 OS: 'Windows 10  (10.0.19044) 64bit Professional' Language: 'nl' Physical Memory: 32715 MB
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
@@ -25,9 +29,15 @@ Logs/AssetImportWorker0.log
 -srvPort
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 61474
 Successfully changed project path to: C:/Unity/Projects/Infinite-Platformer
 C:/Unity/Projects/Infinite-Platformer
+=======
+56802
+Successfully changed project path to: C:/Users/tempe/Documents/Unity Projects/Infinite-Platformer
+C:/Users/tempe/Documents/Unity Projects/Infinite-Platformer
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 56802
 Successfully changed project path to: C:/Users/tempe/Documents/Unity Projects/Infinite-Platformer
@@ -69,7 +79,11 @@ C:/Users/tempe/Documents/Unity Projects/Infinite-Platformer
     "memorysetup-temp-allocator-size-gfx=262144"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 Refreshing native plugins compatible for Editor in 73.86 ms, found 3 plugins.
+=======
+Refreshing native plugins compatible for Editor in 241.45 ms, found 3 plugins.
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 Refreshing native plugins compatible for Editor in 241.45 ms, found 3 plugins.
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
@@ -85,6 +99,7 @@ Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
     Renderer: NVIDIA GeForce RTX 2060 (ID=0x1f08)
     Vendor:   NVIDIA
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     VRAM:     24340 MB
@@ -158,11 +173,33 @@ Domain Reload Profiling:
 	ReloadAssembly (1537ms)
 		BeginReloadAssembly (187ms)
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
+    VRAM:     5980 MB
+    Driver:   31.0.15.1694
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.1.22f1-x86_64/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.1.22f1-x86_64/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.1.22f1-x86_64/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56172
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.1.22f1-x86_64/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.032822 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 170.72 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  1.537 seconds
+Domain Reload Profiling:
+	ReloadAssembly (1537ms)
+		BeginReloadAssembly (187ms)
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 		EndReloadAssembly (395ms)
@@ -207,6 +244,19 @@ Domain Reload Profiling:
 			SetupLoadedEditorAssemblies (544ms)
 				LogAssemblyErrors (0ms)
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
+		EndReloadAssembly (1007ms)
+			LoadAssemblies (181ms)
+			RebuildTransferFunctionScriptingTraits (0ms)
+			SetupTypeCache (238ms)
+				TypeCache.Initialize (237ms)
+					TypeCache.ScanAssembly (232ms)
+				ResolveRequiredComponents (1ms)
+			ReleaseScriptCaches (0ms)
+			RebuildScriptCaches (65ms)
+			SetupLoadedEditorAssemblies (544ms)
+				LogAssemblyErrors (0ms)
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 				InitializePlatformSupportModulesInManaged (20ms)
 				SetLoadedEditorAssemblies (13ms)
 				RefreshPlugins (171ms)
@@ -214,6 +264,9 @@ Domain Reload Profiling:
 				ProcessInitializeOnLoadAttributes (253ms)
 				ProcessInitializeOnLoadMethodAttributes (86ms)
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
@@ -223,6 +276,7 @@ Domain Reload Profiling:
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 Registered in 0.006020 seconds.
@@ -279,6 +333,8 @@ Total: 3.105800 ms (FindLiveObjects: 0.287600 ms CreateObjectMapping: 0.100600 m
 =======
 =======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 Registered in 0.017818 seconds.
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image C:\Users\tempe\Documents\Unity Projects\Infinite-Platformer\Library\PackageCache\com.unity.visualscripting@1.7.8\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
@@ -328,6 +384,9 @@ Unloading 52 unused Assets / (131.2 KB). Loaded Objects now: 4060.
 Memory consumption went from 0.54 GB to 0.54 GB.
 Total: 5.740800 ms (FindLiveObjects: 0.377100 ms CreateObjectMapping: 0.132500 ms MarkObjects: 5.053300 ms  DeleteObjects: 0.176200 ms)
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
@@ -344,6 +403,7 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   Time since last request: 15846.651840 seconds.
@@ -1132,6 +1192,8 @@ Total: 2.726100 ms (FindLiveObjects: 0.308800 ms CreateObjectMapping: 0.090800 m
 =======
 =======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
   Time since last request: 6113.877021 seconds.
   path: Assets/Scenes/SampleScene.unity
   artifactKey: Guid(9fc0d4010bbf28b4594072e72b8655ab) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
@@ -1185,6 +1247,9 @@ Unloading 33 unused Assets / (96.1 KB). Loaded Objects now: 4075.
 Memory consumption went from 0.54 GB to 0.54 GB.
 Total: 3.708200 ms (FindLiveObjects: 0.333200 ms CreateObjectMapping: 0.091700 ms MarkObjects: 3.218600 ms  DeleteObjects: 0.063000 ms)
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
+=======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
 =======
 >>>>>>> 2ee2d3d0fe2cd8486efae620eaf66edabaf04c5d
