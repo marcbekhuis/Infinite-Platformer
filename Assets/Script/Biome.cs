@@ -10,6 +10,7 @@ public class Biome : ScriptableObject
     public int minSections = 3;
     public int maxSections = 10;
     public Section[] sections;
+    public GameObject endMap;
 
     public Section GetSection(float playerDistance, float biomeDistance)
     {

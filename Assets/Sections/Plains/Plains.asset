@@ -18,3 +18,4 @@ MonoBehaviour:
   maxSections: 10
   sections:
   - {fileID: -1400603206446102935, guid: a6f09f8b618c66c429a76c5f0ca95d92, type: 3}
+  endMap: {fileID: 3758925694209782602, guid: 145ebb8a38656854792f9352a58efc2e, type: 3}

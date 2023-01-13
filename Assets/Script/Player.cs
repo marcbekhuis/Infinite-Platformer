@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     private bool jumpedInWater = false;
 
     private bool inWater = false;
+    private float velocity = 0;
 
     public enum State 
     {
@@ -151,7 +152,6 @@ public class Player : MonoBehaviour
 
     private void MoveForwardBackward()
     {
-        float velocity = 0;
         int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();
         switch (state)
         {
@@ -161,11 +161,11 @@ public class Player : MonoBehaviour
             case State.InAir:
                 if(direction == 0)
                 {
-                    velocity = rigidbody.velocity.x - Mathf.Clamp(rigidbody.velocity.x, -1, 1) * airDrag * Time.deltaTime;
+                    velocity = velocity - Mathf.Clamp(velocity, -1, 1) * airDrag * Time.deltaTime;
                 }
                 else
                 {
-                    velocity = Mathf.Clamp(rigidbody.velocity.x + airGain * Time.deltaTime * direction, -airSpeed, airSpeed);
+                    velocity = Mathf.Clamp(velocity + airGain * Time.deltaTime * direction, -airSpeed, airSpeed);
                 }
                 break;
             case State.InWater:
@@ -174,7 +174,8 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
-        rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+        MapGenerator.instance.MoveMap(new Vector3(-velocity * Time.deltaTime, 0, 0));
+        //rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
     }
 
     private void AirCheck()

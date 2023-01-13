@@ -8,13 +8,15 @@ public class MapGenerator : Singleton<MapGenerator>
     [SerializeField] private float distanceFromEndToSpawn = 10;
     [SerializeField] private Biome[] biomes;
 
-    private float distance = -3;
+    private float distance = 0;
+    private float playerDistance = 0;
     private int biomeSections = 0;
     private Section lastSection;
     private Biome lastBiome;
     private float biomeDistance;
     private float lastGameObjectHeight;
     private List<GameObject> sections = new List<GameObject>();
+    private GameObject endMap;
 
     private void Start()
     {
@@ -23,13 +25,24 @@ public class MapGenerator : Singleton<MapGenerator>
 
     private void Update()
     {
-        if (distance - target.position.x <= distanceFromEndToSpawn)
+        if (distance - playerDistance <= distanceFromEndToSpawn)
             GenerateSection();
+    }
+
+    public void MoveMap(Vector3 offset)
+    {
+        playerDistance -= offset.x;
+        foreach (var section in sections)
+        {
+            section.transform.Translate(offset);
+        }
+        endMap.transform.Translate(offset);
     }
 
     public void ResetMap()
     {
-        distance = -3;
+        distance = 0;
+        playerDistance = 0;
         biomeSections = 0;
         lastSection = null;
         lastBiome = null;
@@ -66,16 +79,25 @@ public class MapGenerator : Singleton<MapGenerator>
 
     public void GenerateSection()
     {
-        if (sections.Count > 4)
+        if (sections.Count > 1)
         {
             Destroy(sections[0]);
             sections.RemoveAt(0);
+            endMap.transform.position = sections[0].transform.position;
         }
 
-        Section section = GetValidBiome().GetSection(distance, biomeDistance);
+        Biome biome = GetValidBiome();
+        Section section = biome.GetSection(distance, biomeDistance);
+        if(biome != lastBiome)
+        {
+            if(endMap)
+                Destroy(endMap);
+
+            endMap = Instantiate(biome.endMap);
+        }
         if (lastSection)
         {
-            GameObject gameObject = Instantiate(section.gameObject, new Vector3(distance, lastSection.endHeight - section.startHeight + lastGameObjectHeight, 0), new Quaternion(0, 0, 0, 0));
+            GameObject gameObject = Instantiate(section.gameObject, new Vector3(distanceFromEndToSpawn, lastSection.endHeight - section.startHeight + lastGameObjectHeight, 0), new Quaternion(0, 0, 0, 0));
             sections.Add(gameObject);
             lastGameObjectHeight = gameObject.transform.position.y;
         }
@@ -87,6 +109,7 @@ public class MapGenerator : Singleton<MapGenerator>
         }
         biomeSections++;
         lastSection = section;
+        lastBiome = biome;
         distance += section.length;
     }
 }
