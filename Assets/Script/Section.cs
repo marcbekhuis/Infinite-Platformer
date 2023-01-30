@@ -5,9 +5,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Section : MonoBehaviour
 {
-    public float startHeight;
-    public float endHeight;
-    public float length;
+    public Transform start;
+    public Transform end;
     public float minBiomeSpawnDistance;
     public float maxBiomeSpawnDistance;
 
@@ -23,11 +22,14 @@ public class Section : MonoBehaviour
 
     private void Update()
     {
-        if(oldStartHeight != startHeight)
+        if (Application.isPlaying)
+            return;
+
+        if(oldStartHeight != start.position.y)
             UpdateStart();
-        if(oldLength != length)
+        if(oldLength != end.position.x)
             UpdateEnd();
-        if (oldEndHeight != endHeight)
+        if (oldEndHeight != end.position.y)
             UpdateEnd();
         if(oldGroundLayer != groundLayer)
         {
@@ -37,40 +39,40 @@ public class Section : MonoBehaviour
     }
     private void UpdateStart()
     {
-        RaycastHit[] hits = Physics.RaycastAll(new Vector3(0, startHeight + 1, 0), Vector3.down, 5, groundLayer);
+        RaycastHit[] hits = Physics.RaycastAll(new Vector3(0, start.position.y + 1, 0), Vector3.down, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(0, startHeight + 1, 0), hits[0].point);
-            startHeight = hits[0].point.y;
+            Debug.DrawLine(new Vector3(0, start.position.y + 1, 0), hits[0].point);
+            start.position = hits[0].point;
         }
-        oldStartHeight = startHeight;
+        oldStartHeight = start.position.y;
         oldGroundLayer = groundLayer;
     }
 
     private void UpdateEnd()
     {
-        RaycastHit[] hits = Physics.RaycastAll(new Vector3(length + 2, endHeight - 0.5f, 0), Vector3.left, 5, groundLayer);
+        RaycastHit[] hits = Physics.RaycastAll(new Vector3(end.position.x + 2, end.position.y - 0.5f, 0), Vector3.left, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(length + 2, endHeight - 0.5f, 0), hits[0].point, Color.yellow, 20);
-            length = hits[0].point.x - endMargin;
+            Debug.DrawLine(new Vector3(end.position.x + 2, end.position.y - 0.5f, 0), hits[0].point, Color.yellow, 20);
+            end.position = new Vector3(hits[0].point.x - endMargin, end.position.y, 0);
         }
-        hits = Physics.RaycastAll(new Vector3(length - 0.2f, endHeight + 1, 0), Vector3.down, 5, groundLayer);
+        hits = Physics.RaycastAll(new Vector3(end.position.x - 0.2f, end.position.y + 1, 0), Vector3.down, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(length - 0.2f, endHeight + 1, 0), hits[0].point, Color.yellow, 20);
-            endHeight = hits[0].point.y;
+            Debug.DrawLine(new Vector3(end.position.x - 0.2f, end.position.y + 1, 0), hits[0].point, Color.yellow, 20);
+            end.position = new Vector3(end.position.x, hits[0].point.y, 0);
         }
-        oldEndHeight = endHeight;
-        oldLength = length;
+        oldEndHeight = end.position.y;
+        oldLength = end.position.x;
         oldGroundLayer = groundLayer;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(new Vector3(0,startHeight, 0), 0.1f);
-        Gizmos.DrawSphere(new Vector3(length, endHeight, 0), 0.1f);
+        Gizmos.DrawSphere(start.position, 0.1f);
+        Gizmos.DrawSphere(end.position, 0.1f);
     }
 #endif
 }

@@ -16,12 +16,12 @@ public class PeriodicAds : MonoBehaviour
 
     public void RetryPressed()
     {
-        AddScore(player.transform.position.x, true);
+        AddScore(GameManager.instance.playerDistance, true);
     }
 
     public void HomePressed()
     {
-        AddScore(player.transform.position.x);
+        AddScore(GameManager.instance.playerDistance);
     }
 
     public void AddScore(float additiveScore, bool instantPlay = false)
@@ -60,16 +60,16 @@ public class PeriodicAds : MonoBehaviour
 
     private void Retry()
     {
+        GameManager.instance.ResetGame();
         GameManager.instance.Play();
-        MapGenerator.instance.ResetMap();
         player.Respawn();
     }
 
 
     private void Home()
     {
+        GameManager.instance.ResetGame();
         GameManager.instance.MainMenu();
-        MapGenerator.instance.ResetMap();
         player.Respawn();
     }
 }

@@ -7,6 +7,7 @@ public class UiDetection : Singleton<UiDetection>
 {
     [SerializeField] private RectTransform checkFrom;
     [SerializeField] private Canvas canvas;
+    [SerializeField] private bool debugging = false;
 
     public bool CheckOnUI(Vector3 position)
     {
@@ -46,6 +47,9 @@ public class UiDetection : Singleton<UiDetection>
 
     private void OnDrawGizmos()
     {
+        if (!debugging)
+            return;
+
         List<RectTransform> rectTransforms = new List<RectTransform> { checkFrom };
 
         for (int i = 0; i < rectTransforms.Count; i++)

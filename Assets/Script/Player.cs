@@ -29,6 +29,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector3 spawnPosition = new Vector3(0, 0.5f, 0);
     [SerializeField] private float spawnHeightCheckOffset = 3;
     [SerializeField] private Vector3 cameraSpawnOffset = new Vector3(0, 2.1f, -10);
+    [Header("Camera offset")]
+    [SerializeField] private float distance;
+    [SerializeField] private Transform cameraOffset;
 
     public UnityEvent onDeath = new UnityEvent();
 
@@ -152,6 +155,9 @@ public class Player : MonoBehaviour
 
     private void MoveForwardBackward()
     {
+        MapGenerator.instance.MoveMap(-new Vector3(rigidbody.position.x, 0, 0));
+        rigidbody.position = new Vector3(0, rigidbody.position.y, 0);
+
         int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();
         switch (state)
         {
@@ -174,8 +180,8 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
-        MapGenerator.instance.MoveMap(new Vector3(-velocity * Time.deltaTime, 0, 0));
-        //rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+        rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+        cameraOffset.localPosition = Vector3.right * distance * direction;
     }
 
     private void AirCheck()

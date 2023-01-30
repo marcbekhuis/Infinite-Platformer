@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapGenerator : Singleton<MapGenerator>
@@ -9,7 +10,6 @@ public class MapGenerator : Singleton<MapGenerator>
     [SerializeField] private Biome[] biomes;
 
     private float distance = 0;
-    private float playerDistance = 0;
     private int biomeSections = 0;
     private Section lastSection;
     private Biome lastBiome;
@@ -25,13 +25,13 @@ public class MapGenerator : Singleton<MapGenerator>
 
     private void Update()
     {
-        if (distance - playerDistance <= distanceFromEndToSpawn)
+        if (distance - GameManager.instance.playerDistance <= distanceFromEndToSpawn)
             GenerateSection();
     }
 
     public void MoveMap(Vector3 offset)
     {
-        playerDistance -= offset.x;
+        GameManager.instance.playerDistance -= offset.x;
         foreach (var section in sections)
         {
             section.transform.Translate(offset);
@@ -42,7 +42,6 @@ public class MapGenerator : Singleton<MapGenerator>
     public void ResetMap()
     {
         distance = 0;
-        playerDistance = 0;
         biomeSections = 0;
         lastSection = null;
         lastBiome = null;
@@ -97,7 +96,7 @@ public class MapGenerator : Singleton<MapGenerator>
         }
         if (lastSection)
         {
-            GameObject gameObject = Instantiate(section.gameObject, new Vector3(distanceFromEndToSpawn, lastSection.endHeight - section.startHeight + lastGameObjectHeight, 0), new Quaternion(0, 0, 0, 0));
+            GameObject gameObject = Instantiate(section.gameObject, new Vector3(sections.Last().transform.position.x + lastSection.end.localPosition.x, lastSection.end.localPosition.y - section.start.localPosition.y + lastGameObjectHeight, 0), new Quaternion(0, 0, 0, 0));
             sections.Add(gameObject);
             lastGameObjectHeight = gameObject.transform.position.y;
         }
@@ -110,6 +109,6 @@ public class MapGenerator : Singleton<MapGenerator>
         biomeSections++;
         lastSection = section;
         lastBiome = biome;
-        distance += section.length;
+        distance += section.end.position.x;
     }
 }

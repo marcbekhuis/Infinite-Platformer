@@ -9,6 +9,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public bool gamePaused = false;
     [HideInInspector] public bool gameEnded = false;
 
+    public float playerDistance = 0;
     public bool PlayerMovementBlocked { get => gamePaused || gameEnded; }
 
     private void Start()
@@ -56,5 +57,11 @@ public class GameManager : Singleton<GameManager>
         gamePaused = false;
         gameEnded = false;
         UiManager.instance.ShowGameUI();
+    }
+
+    public void ResetGame()
+    {
+        playerDistance = 0;
+        MapGenerator.instance.ResetMap();
     }
 }
