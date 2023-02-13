@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a8f65694d1af95489ad13e7e55b8a1d, type: 3}
+  m_Name: Debug
+  m_EditorClassIdentifier: 
+  minGenerationDistance: 0
+  maxGenerationDistance: 1000
+  minSections: 3
+  maxSections: 100
+  sections:
+  - {fileID: -1400603206446102935, guid: 53b2b6896ae82244d8f349be35f40323, type: 3}
+  endMap: {fileID: 3758925694209782602, guid: 145ebb8a38656854792f9352a58efc2e, type: 3}

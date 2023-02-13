@@ -13,7 +13,10 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PointManager.instance.points++;
-        Destroy(this.gameObject);
+        if (other.transform.parent.TryGetComponent<Player>(out Player player))
+        {
+            PointManager.instance.points++;
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -2550,7 +2550,7 @@ MonoBehaviour:
   target: {fileID: 1269577481}
   distanceFromEndToSpawn: 20
   biomes:
-  - {fileID: 11400000, guid: 0edd4667bcb30c54eab6a4f6cbea4e7d, type: 2}
+  - {fileID: 11400000, guid: 20d7a023cb8024646b5c032f57cfd899, type: 2}
 --- !u!114 &785525978
 MonoBehaviour:
   m_ObjectHideFlags: 0
