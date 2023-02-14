@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     [Header("Camera offset")]
     [SerializeField] private float distance;
     [SerializeField] private Transform cameraOffset;
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
 
     public UnityEvent onDeath = new UnityEvent();
 
@@ -129,6 +131,11 @@ public class Player : MonoBehaviour
             rigidbody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
             jumpTimer += jumpCooldown;
 
+            if (animator)
+            {
+                animator.SetTrigger("Jump");
+            }
+
             if (state == State.InWater)
                 jumpedInWater = true;
         }
@@ -150,6 +157,10 @@ public class Player : MonoBehaviour
             airJumpsUsed++;
             rigidbody.AddForce(new Vector3(0, airJumpHeight + Mathf.Clamp(rigidbody.velocity.y * -1, 0 , 10), 0), ForceMode.Impulse);
             airJumpTimer += airJumpCooldown;
+            if (animator)
+            {
+                animator.SetTrigger("Jump");
+            }
         }
     }
 
@@ -181,12 +192,20 @@ public class Player : MonoBehaviour
                 break;
         }
         rigidbody.velocity = new Vector3(velocity, rigidbody.velocity.y, 0);
+        if (animator)
+        {
+            animator.SetFloat("speed", Mathf.Abs(velocity));
+        }
         cameraOffset.localPosition = Vector3.right * distance * direction;
     }
 
     private void AirCheck()
     {
         inAir = !Physics.CheckBox(transform.position + transform.rotation * airCheckOffset, airCheckHalfSize, transform.rotation, groundLayers);
+        if (animator)
+        {
+            animator.SetBool("air", inAir);
+        }
         if (!inAir)
             airJumpsUsed = 0;
     }
@@ -201,7 +220,10 @@ public class Player : MonoBehaviour
     public void Die()
     {
         rigidbody.velocity = Vector3.zero;
-        transform.position = lastSaveGroundPosition + new Vector3(0, 0.5f, 0);
+        transform.position = lastSaveGroundPosition + new Vector3(0, 0.5f, 0); if (animator)
+        {
+            animator.SetTrigger("Die");
+        }
         onDeath.Invoke();
     }
 
