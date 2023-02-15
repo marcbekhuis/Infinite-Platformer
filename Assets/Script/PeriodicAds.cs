@@ -30,9 +30,9 @@ public class PeriodicAds : MonoBehaviour
         if(adScore > showAdScore)
         {
             if(instantPlay)
-                AdsSystem.instance.onAdComplited += OnAdRetryComplete;
+                AdsSystem.instance.onAdShowCompleted += OnAdRetryComplete;
             else
-                AdsSystem.instance.onAdComplited += OnAdHomeComplete;
+                AdsSystem.instance.onAdShowCompleted += OnAdHomeComplete;
 
             AdsSystem.instance.LoadAd(AdsSystem.instance._adUnitId);
         }
@@ -49,13 +49,13 @@ public class PeriodicAds : MonoBehaviour
     {
         Retry();
         adScore -= showAdScore;
-        AdsSystem.instance.onAdComplited -= OnAdRetryComplete;
+        AdsSystem.instance.onAdShowCompleted -= OnAdRetryComplete;
     }
     private void OnAdHomeComplete()
     {
         Home();
         adScore -= showAdScore;
-        AdsSystem.instance.onAdComplited -= OnAdHomeComplete;
+        AdsSystem.instance.onAdShowCompleted -= OnAdHomeComplete;
     }
 
     private void Retry()

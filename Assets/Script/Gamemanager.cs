@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -11,6 +12,12 @@ public class GameManager : Singleton<GameManager>
 
     public float playerDistance = 0;
     public bool PlayerMovementBlocked { get => gamePaused || gameEnded; }
+
+    public delegate void MoveMapDelegate(Vector3 offset);
+    public event MoveMapDelegate OnMoveMap = delegate { };
+    public delegate void GameEvent();
+    public event GameEvent OnResetGame = delegate { };
+    public event GameEvent OnContinueGame = delegate { };
 
     private void Start()
     {
@@ -57,11 +64,19 @@ public class GameManager : Singleton<GameManager>
         gamePaused = false;
         gameEnded = false;
         UiManager.instance.ShowGameUI();
+        OnContinueGame();
+    }
+
+    public void MoveMap(Vector3 offset)
+    {
+        playerDistance -= offset.x;
+        OnMoveMap(offset);
     }
 
     public void ResetGame()
     {
         playerDistance = 0;
         MapGenerator.instance.ResetMap();
+        OnResetGame();
     }
 }

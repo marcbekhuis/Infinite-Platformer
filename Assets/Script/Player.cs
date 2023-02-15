@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
 
     private void MoveForwardBackward()
     {
-        MapGenerator.instance.MoveMap(-new Vector3(rigidbody.position.x, 0, 0));
+        GameManager.instance.MoveMap(-new Vector3(rigidbody.position.x, 0, 0));
         rigidbody.position = new Vector3(0, rigidbody.position.y, 0);
 
         int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();

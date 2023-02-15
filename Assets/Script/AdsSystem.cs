@@ -5,22 +5,21 @@ using UnityEngine.Advertisements;
 
 public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsInitializationListener
 {
-    [SerializeField] private int timeBetweenAds = 300;
     [SerializeField] private string androidGameID = "4459541";
     [SerializeField] private string iosGameID = "4459540";
     [SerializeField] private bool testMode = false;
     private string _gameId;
 
-    [SerializeField] private string _androidAdUnitId = "Interstitial_Android";
-    [SerializeField] private string _iosAdUnitId = "Interstitial_iOS";
+    [SerializeField] private string androidAdUnitId = "Interstitial_Android";
+    [SerializeField] private string iosAdUnitId = "Interstitial_iOS";
     public string _adUnitId { get; private set; }
-    [SerializeField] private string _rewardAndroidAdUnitId = "Rewarded_Android";
-    [SerializeField] private string _rewardIosAdUnitId = "Rewarded_iOS";
+    [SerializeField] private string rewardAndroidAdUnitId = "Rewarded_Android";
+    [SerializeField] private string rewardIosAdUnitId = "Rewarded_iOS";
     public string _rewardAdUnitId { get;  private set; }
 
     public delegate void AdComplited();
-    public event AdComplited onRewardComplited = delegate { };
-    public event AdComplited onAdComplited = delegate { };
+    public event AdComplited onRewardCompleted = delegate { };
+    public event AdComplited onAdShowCompleted = delegate { };
 
     protected override void Awake()
     {
@@ -37,13 +36,15 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
         _gameId = (Application.platform == RuntimePlatform.IPhonePlayer)
             ? iosGameID
             : androidGameID;
-        Advertisement.Initialize(_gameId, testMode, this);
         _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
-            ? _iosAdUnitId
-            : _androidAdUnitId;
+            ? iosAdUnitId
+            : androidAdUnitId;
         _rewardAdUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
-            ? _rewardIosAdUnitId
-            : _rewardAndroidAdUnitId;
+            ? rewardIosAdUnitId
+            : rewardAndroidAdUnitId;
+
+        if (!Advertisement.isInitialized)
+            Advertisement.Initialize(_gameId, testMode, this);
     }
 
     public void OnInitializationComplete()
@@ -95,13 +96,13 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
     public void OnUnityAdsShowClick(string adUnitId) { }
     public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) 
     {
-        onAdComplited();
+        onAdShowCompleted();
         switch (showCompletionState)
         {
             case UnityAdsShowCompletionState.SKIPPED:
                 break;
             case UnityAdsShowCompletionState.COMPLETED:
-                onRewardComplited();
+                onRewardCompleted();
                 break;
             case UnityAdsShowCompletionState.UNKNOWN:
                 break;

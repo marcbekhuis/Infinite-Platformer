@@ -20,6 +20,7 @@ public class MapGenerator : Singleton<MapGenerator>
 
     private void Start()
     {
+        GameManager.instance.OnMoveMap += MoveMap;
         GenerateSection();
     }
 
@@ -31,7 +32,6 @@ public class MapGenerator : Singleton<MapGenerator>
 
     public void MoveMap(Vector3 offset)
     {
-        GameManager.instance.playerDistance -= offset.x;
         foreach (var section in sections)
         {
             section.transform.Translate(offset);

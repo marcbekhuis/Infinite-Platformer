@@ -6,13 +6,13 @@ public class RespawnSystem : MonoBehaviour
 {
     public void RespawnPressed()
     {
-        AdsSystem.instance.onRewardComplited += Respawn;
+        AdsSystem.instance.onRewardCompleted += Respawn;
         AdsSystem.instance.LoadAd(AdsSystem.instance._rewardAdUnitId);
     }
 
     private void Respawn()
     {
-        AdsSystem.instance.onRewardComplited -= Respawn;
+        AdsSystem.instance.onRewardCompleted -= Respawn;
         GameManager.instance.ContinueGame();
     }
 }
