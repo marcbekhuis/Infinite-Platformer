@@ -10,7 +10,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public bool gamePaused = false;
     [HideInInspector] public bool gameEnded = false;
 
-    public float playerDistance = 0;
+    [HideInInspector] public float playerDistance = 0;
+    [HideInInspector] public float lastSavePlayerDistance = 0;
+    [HideInInspector] public float lastSaveHeight = 0;
+
     public bool PlayerMovementBlocked { get => gamePaused || gameEnded; }
 
     public delegate void MoveMapDelegate(Vector3 offset);
@@ -65,6 +68,7 @@ public class GameManager : Singleton<GameManager>
         gameEnded = false;
         UiManager.instance.ShowGameUI();
         OnContinueGame();
+        playerDistance = lastSavePlayerDistance;
     }
 
     public void MoveMap(Vector3 offset)
@@ -78,5 +82,11 @@ public class GameManager : Singleton<GameManager>
         playerDistance = 0;
         MapGenerator.instance.ResetMap();
         OnResetGame();
+    }
+
+    public void SetSafePoint(float height)
+    {
+        lastSavePlayerDistance = playerDistance;
+        lastSaveHeight= height;
     }
 }

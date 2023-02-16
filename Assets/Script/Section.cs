@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -39,40 +40,59 @@ public class Section : MonoBehaviour
     }
     private void UpdateStart()
     {
-        RaycastHit[] hits = Physics.RaycastAll(new Vector3(0, start.position.y + 1, 0), Vector3.down, 5, groundLayer);
+        RaycastHit[] hits = Physics.RaycastAll(transform.position + new Vector3(0, start.localPosition.y + 1, 0), Vector3.down, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(0, start.position.y + 1, 0), hits[0].point);
-            start.position = hits[0].point;
+            RaycastHit closestHit = hits[0];
+            foreach (var hit in hits)
+            {
+                if (Vector3.Distance(hit.point, end.position) < Vector3.Distance(closestHit.point, end.position))
+                    closestHit = hit;
+            }
+            Debug.DrawLine(transform.position + new Vector3(0, start.localPosition.y + 1, 0), closestHit.point);
+            start.position = closestHit.point;
         }
-        oldStartHeight = start.position.y;
+        oldStartHeight = start.localPosition.y;
         oldGroundLayer = groundLayer;
     }
 
     private void UpdateEnd()
     {
-        RaycastHit[] hits = Physics.RaycastAll(new Vector3(end.position.x + 2, end.position.y - 0.5f, 0), Vector3.left, 5, groundLayer);
+        RaycastHit[] hits = Physics.RaycastAll(transform.position + new Vector3(end.localPosition.x + 2, end.localPosition.y - 0.5f, 0), Vector3.left, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(end.position.x + 2, end.position.y - 0.5f, 0), hits[0].point, Color.yellow, 20);
-            end.position = new Vector3(hits[0].point.x - endMargin, end.position.y, 0);
+            RaycastHit closestHit = hits[0];
+            foreach (var hit in hits)
+            {
+                if (Vector3.Distance(hit.point, end.position) < Vector3.Distance(closestHit.point, end.position))
+                    closestHit = hit;
+            }
+            Debug.DrawLine(new Vector3(end.localPosition.x + 2, end.position.y - 0.5f, 0), closestHit.point, Color.yellow, 20);
+            end.position = new Vector3(closestHit.point.x - endMargin, end.position.y, 0);
         }
-        hits = Physics.RaycastAll(new Vector3(end.position.x - 0.2f, end.position.y + 1, 0), Vector3.down, 5, groundLayer);
+
+        hits = Physics.RaycastAll(transform.position + new Vector3(end.localPosition.x - 0.2f, end.localPosition.y + 1, 0), Vector3.down, 5, groundLayer);
         if (hits.Length > 0)
         {
-            Debug.DrawLine(new Vector3(end.position.x - 0.2f, end.position.y + 1, 0), hits[0].point, Color.yellow, 20);
-            end.position = new Vector3(end.position.x, hits[0].point.y, 0);
+            RaycastHit closestHit = hits[0];
+            foreach (var hit in hits)
+            {
+                if (Vector3.Distance(hit.point, end.position) < Vector3.Distance(closestHit.point, end.position))
+                    closestHit = hit;
+            }
+            Debug.DrawLine(transform.position + new Vector3(end.localPosition.x - 0.2f, end.localPosition.y + 1, 0), closestHit.point, Color.yellow, 20);
+            end.position = new Vector3(end.position.x, closestHit.point.y, 0);
         }
-        oldEndHeight = end.position.y;
-        oldLength = end.position.x;
+        oldEndHeight = end.localPosition.y;
+        oldLength = end.localPosition.x;
         oldGroundLayer = groundLayer;
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(start.position, 0.1f);
-        Gizmos.DrawSphere(end.position, 0.1f);
+        Gizmos.DrawSphere(transform.position + start.localPosition, 0.1f);
+        Gizmos.DrawSphere(transform.position + end.localPosition, 0.1f);
     }
 #endif
 }

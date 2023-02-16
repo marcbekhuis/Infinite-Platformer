@@ -14,6 +14,7 @@ public class GhostMovement : MonoBehaviour
     {
         GameManager.instance.OnMoveMap += OnMoveMap;
         GameManager.instance.OnResetGame += ResetGhost;
+        GameManager.instance.OnContinueGame += OnContinueGame;
         startPosition = transform.position;
     }
 
@@ -35,5 +36,10 @@ public class GhostMovement : MonoBehaviour
     private void OnMoveMap(Vector3 offset)
     {
         transform.position += offset;
+    }
+
+    private void OnContinueGame()
+    {
+        transform.position = new Vector3(startPosition.x, GameManager.instance.lastSaveHeight, startPosition.z);
     }
 }

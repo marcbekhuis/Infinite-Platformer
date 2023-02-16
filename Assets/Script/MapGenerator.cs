@@ -21,6 +21,7 @@ public class MapGenerator : Singleton<MapGenerator>
     private void Start()
     {
         GameManager.instance.OnMoveMap += MoveMap;
+        GameManager.instance.OnContinueGame += OnContinueGame;
         GenerateSection();
     }
 
@@ -110,5 +111,15 @@ public class MapGenerator : Singleton<MapGenerator>
         lastSection = section;
         lastBiome = biome;
         distance += section.end.position.x;
+    }
+
+    private void OnContinueGame()
+    {
+        Vector3 offset = Vector3.right * (GameManager.instance.lastSavePlayerDistance - GameManager.instance.playerDistance);
+        foreach (var section in sections)
+        {
+            section.transform.Translate(offset);
+        }
+        endMap.transform.Translate(offset);
     }
 }

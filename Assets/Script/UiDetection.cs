@@ -29,7 +29,8 @@ public class UiDetection : Singleton<UiDetection>
                     if (position.x > lowerPosition.x && position.y > lowerPosition.y)
                         if (position.x < upperPosition.x && position.y < upperPosition.y)
                         {
-                            Debug.LogError("Hit: " + rectTransform.name);
+                            if(debugging)
+                                Debug.LogError("Hit: " + rectTransform.name);
                             return true;
                         }
                 }

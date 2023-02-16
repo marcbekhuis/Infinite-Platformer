@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PointManager : Singleton<PointManager>
 {
-    [SerializeField] private TMP_Text pointText;
+    [SerializeField] private TMP_Text[] pointTexts;
 
     private int pointsVar;
 
@@ -21,7 +21,10 @@ public class PointManager : Singleton<PointManager>
 
     public void UpdateDisplay()
     {
-        pointText.text = points.ToString();
+        foreach (var pointText in pointTexts)
+        {
+            pointText.text = points.ToString();
+        }
     }
 
     private void Start()

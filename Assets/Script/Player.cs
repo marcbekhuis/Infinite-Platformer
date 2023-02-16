@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector3 saveGroundCheckOffsetRight = Vector3.right;
     [SerializeField] private Vector3 saveGroundCheckOffsetLeft = Vector3.left;
     [SerializeField] private Vector3 saveGroundCheckHalfSize = Vector3.one;
-    [SerializeField] private Vector3 spawnPosition = new Vector3(0, 0.5f, 0);
+    [SerializeField] public Vector3 spawnPosition = new Vector3(0, 0.5f, 0);
     [SerializeField] private float spawnHeightCheckOffset = 3;
     [SerializeField] private Vector3 cameraSpawnOffset = new Vector3(0, 2.1f, -10);
     [Header("Camera offset")]
@@ -41,12 +41,14 @@ public class Player : MonoBehaviour
     private float jumpTimer = 0;
     private float airJumpTimer = 0;
     private bool inAir = false;
-    private Vector3 lastSaveGroundPosition;
     private int airJumpsUsed = 0;
     private bool jumpedInWater = false;
 
     private bool inWater = false;
     private float velocity = 0;
+
+    public delegate void SafePoint();
+    public static event SafePoint OnSafePoint = delegate { };
 
     public enum State 
     {
@@ -85,13 +87,13 @@ public class Player : MonoBehaviour
     private void Start()
     {
         onDeath.AddListener(GameManager.instance.GameOver);
-        Respawn();
+        GameManager.instance.OnContinueGame += OnContinueGame;
+        Respawn(spawnPosition);
     }
 
-    public void Respawn()
+    public void Respawn(Vector3 position)
     {
-        RaycastHit[] hits = Physics.RaycastAll(spawnPosition + Vector3.up * spawnHeightCheckOffset, Vector3.down, spawnHeightCheckOffset * 2, groundLayers);
-        Vector3 position = spawnPosition;
+        RaycastHit[] hits = Physics.RaycastAll(position + Vector3.up * spawnHeightCheckOffset, Vector3.down, spawnHeightCheckOffset * 2, groundLayers);
         if(hits.Length > 0)
         {
             position = hits[0].point;
@@ -214,17 +216,25 @@ public class Player : MonoBehaviour
     {
         if (Physics.CheckBox(transform.position + transform.rotation * saveGroundCheckOffsetLeft, saveGroundCheckHalfSize, transform.rotation, groundLayers)
         && Physics.CheckBox(transform.position + transform.rotation * saveGroundCheckOffsetRight, saveGroundCheckHalfSize, transform.rotation, groundLayers))
-            lastSaveGroundPosition = transform.position;
+        {
+            GameManager.instance.SetSafePoint(transform.position.y);
+            OnSafePoint();
+        }
     }
 
     public void Die()
     {
         rigidbody.velocity = Vector3.zero;
-        transform.position = lastSaveGroundPosition + new Vector3(0, 0.5f, 0); if (animator)
+        if (animator)
         {
             animator.SetTrigger("Die");
         }
         onDeath.Invoke();
+    }
+
+    private void OnContinueGame()
+    {
+        Respawn(new Vector3(spawnPosition.x, GameManager.instance.lastSaveHeight, spawnPosition.z));
     }
 
     private void OnDrawGizmos()

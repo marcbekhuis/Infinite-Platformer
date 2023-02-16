@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
-    private InputPC inputPC = new InputPC();
-    private InputMobile inputMobile = new InputMobile();
+    private InputPC inputPC;
+    private InputMobile inputMobile;
+
+    private void Start()
+    {
+        inputPC = new InputPC();
+        inputMobile = new InputMobile();
+    }
 
     public void Uicheck()
     {

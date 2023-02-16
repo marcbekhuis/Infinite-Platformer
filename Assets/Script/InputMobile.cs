@@ -12,6 +12,8 @@ public class InputMobile : InputBase
     public InputMobile()
     {
         jumpTriggerDistance = Screen.height / 4f;
+        GameManager.instance.OnContinueGame += Reset;
+        GameManager.instance.OnResetGame += Reset;
     }
 
     private class JumpTouch 
@@ -24,6 +26,11 @@ public class InputMobile : InputBase
             this.position = position;
             lastJump = Time.time - 1;
         }
+    }
+
+    public void Reset()
+    {
+        jumpTouchStartPosition.Clear();
     }
 
     public void UiCheck()

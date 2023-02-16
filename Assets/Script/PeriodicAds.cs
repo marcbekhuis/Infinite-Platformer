@@ -62,7 +62,7 @@ public class PeriodicAds : MonoBehaviour
     {
         GameManager.instance.ResetGame();
         GameManager.instance.Play();
-        player.Respawn();
+        player.Respawn(player.spawnPosition);
     }
 
 
@@ -70,6 +70,6 @@ public class PeriodicAds : MonoBehaviour
     {
         GameManager.instance.ResetGame();
         GameManager.instance.MainMenu();
-        player.Respawn();
+        player.Respawn(player.spawnPosition);
     }
 }
