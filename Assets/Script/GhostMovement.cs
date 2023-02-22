@@ -6,6 +6,7 @@ public class GhostMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private Transform target;
+    [SerializeField] private Vector3 targetOffset;
 
     private Vector3 startPosition;
 
@@ -29,7 +30,7 @@ public class GhostMovement : MonoBehaviour
         if (GameManager.instance.gameEnded || GameManager.instance.gamePaused)
             return;
 
-        transform.LookAt(target);
+        transform.LookAt(target.position + targetOffset);
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 

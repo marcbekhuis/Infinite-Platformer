@@ -117,6 +117,13 @@ public class Player : MonoBehaviour
         CheckForSaveGround();
     }
 
+    private void FixedUpdate()
+    {
+        Vector3 resetDirection = new Vector3(rigidbody.position.x, 0, 0);
+        GameManager.instance.MoveMap(-resetDirection);
+        rigidbody.position -= resetDirection;
+    }
+
     private void Jump()
     {
         jumpTimer -= Time.deltaTime;
@@ -168,17 +175,14 @@ public class Player : MonoBehaviour
 
     private void MoveForwardBackward()
     {
-        GameManager.instance.MoveMap(-new Vector3(rigidbody.position.x, 0, 0));
-        rigidbody.position = new Vector3(0, rigidbody.position.y, 0);
-
         int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();
         switch (state)
         {
             case State.OnGround:
-                velocity = groundSpeed * direction;        
+                velocity = groundSpeed * direction;
                 break;
             case State.InAir:
-                if(direction == 0)
+                if (direction == 0)
                 {
                     velocity = velocity - Mathf.Clamp(velocity, -1, 1) * airDrag * Time.deltaTime;
                 }
