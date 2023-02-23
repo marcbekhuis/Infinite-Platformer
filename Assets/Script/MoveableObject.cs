@@ -12,6 +12,12 @@ public class MoveableObject : MonoBehaviour
         GameManager.instance.OnContinueGame += OnContinueGame;
     }
 
+    private void OnDestroy()
+    {
+        Player.OnSafePoint -= OnSafePoint;
+        GameManager.instance.OnContinueGame -= OnContinueGame;
+    }
+
     private void OnSafePoint()
     {
         resetPoint = transform.localPosition;

@@ -7,7 +7,15 @@ public class PeriodicAds : MonoBehaviour
     [SerializeField] private float showAdScore = 2000;
     [SerializeField] private Player player;
 
-    private float adScore = 0;
+    private float adScoreVar = 0;
+
+    private float adScore { get => adScoreVar; set { adScoreVar = value; PlayerPrefs.SetFloat("adScore",value); } }
+
+    private void Start()
+    {
+        if (PlayerPrefs.HasKey("adScore"))
+            adScore = PlayerPrefs.GetFloat("adScore");
+    }
 
     public void ResetAd()
     {

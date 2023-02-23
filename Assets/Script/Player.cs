@@ -107,6 +107,10 @@ public class Player : MonoBehaviour
     {
         if (GameManager.instance.PlayerMovementBlocked)
         {
+            if (animator)
+            {
+                animator.SetFloat("speed", 0);
+            }
             rigidbody.Sleep();
             return;
         }
@@ -176,6 +180,7 @@ public class Player : MonoBehaviour
     private void MoveForwardBackward()
     {
         int direction = InputManager.instance.MoveRight() + InputManager.instance.MoveLeft();
+        transform.eulerAngles = new Vector3(0, -90, 0) * direction;
         switch (state)
         {
             case State.OnGround:
@@ -207,7 +212,7 @@ public class Player : MonoBehaviour
 
     private void AirCheck()
     {
-        inAir = !Physics.CheckBox(transform.position + transform.rotation * airCheckOffset, airCheckHalfSize, transform.rotation, groundLayers);
+        inAir = !Physics.CheckBox(transform.position + airCheckOffset, airCheckHalfSize, transform.rotation, groundLayers);
         if (animator)
         {
             animator.SetBool("air", inAir);
@@ -218,8 +223,8 @@ public class Player : MonoBehaviour
 
     private void CheckForSaveGround()
     {
-        if (Physics.CheckBox(transform.position + transform.rotation * saveGroundCheckOffsetLeft, saveGroundCheckHalfSize, transform.rotation, groundLayers)
-        && Physics.CheckBox(transform.position + transform.rotation * saveGroundCheckOffsetRight, saveGroundCheckHalfSize, transform.rotation, groundLayers))
+        if (Physics.CheckBox(transform.position + saveGroundCheckOffsetLeft, saveGroundCheckHalfSize, transform.rotation, groundLayers)
+        && Physics.CheckBox(transform.position + saveGroundCheckOffsetRight, saveGroundCheckHalfSize, transform.rotation, groundLayers))
         {
             GameManager.instance.SetSafePoint(transform.position.y);
             OnSafePoint();
@@ -244,9 +249,9 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawCube(transform.position + transform.rotation * airCheckOffset, airCheckHalfSize * 2);
+        Gizmos.DrawCube(transform.position + airCheckOffset, airCheckHalfSize * 2);
         Gizmos.color = Color.blue;
-        Gizmos.DrawCube(transform.position + transform.rotation * saveGroundCheckOffsetRight, saveGroundCheckHalfSize * 2);
-        Gizmos.DrawCube(transform.position + transform.rotation * saveGroundCheckOffsetLeft, saveGroundCheckHalfSize * 2);
+        Gizmos.DrawCube(transform.position + saveGroundCheckOffsetRight, saveGroundCheckHalfSize * 2);
+        Gizmos.DrawCube(transform.position + saveGroundCheckOffsetLeft, saveGroundCheckHalfSize * 2);
     }
 }
