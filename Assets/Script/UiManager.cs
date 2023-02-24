@@ -15,6 +15,8 @@ public class UiManager : Singleton<UiManager>
     [SerializeField] private GameObject pauseMenu;
     [Header("Game Over Menu")]
     [SerializeField] private GameObject gameOverMenu;
+    [Header("Settings Menu")]
+    [SerializeField] private GameObject settingsMenu;
 
     public void ShowGameUI()
     {
@@ -23,6 +25,7 @@ public class UiManager : Singleton<UiManager>
         shopMenu.SetActive(false);
         pauseMenu.SetActive(false);
         gameOverMenu.SetActive(false);
+        settingsMenu.SetActive(false);
     }
 
     public void ShowMainMenu()
@@ -31,6 +34,7 @@ public class UiManager : Singleton<UiManager>
         gameUI.SetActive(false);
         shopMenu.SetActive(false);
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
         gameOverMenu.SetActive(false);
     }
 
@@ -40,6 +44,7 @@ public class UiManager : Singleton<UiManager>
         mainMenu.SetActive(false);
         gameUI.SetActive(false);
         pauseMenu.SetActive(false);
+        settingsMenu.SetActive(false);
         gameOverMenu.SetActive(false);
     }
 
@@ -49,12 +54,24 @@ public class UiManager : Singleton<UiManager>
         gameUI.SetActive(false);
         mainMenu.SetActive(false);
         shopMenu.SetActive(false);
+        settingsMenu.SetActive(false);
         gameOverMenu.SetActive(false);
     }
 
     public void ShowGameOverMenu()
     {
         gameOverMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+        gameUI.SetActive(false);
+        mainMenu.SetActive(false);
+        settingsMenu.SetActive(false);
+        shopMenu.SetActive(false);
+    }
+
+    public void ShowSettingsMenu()
+    {
+        settingsMenu.SetActive(true);
+        gameOverMenu.SetActive(false);
         pauseMenu.SetActive(false);
         gameUI.SetActive(false);
         mainMenu.SetActive(false);

@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Biome", menuName = "ScriptableObject/Biome")]
 public class Biome : ScriptableObject
 {
-    public int minGenerationDistance = 0;
-    public int maxGenerationDistance = 0;
+    public float minGenerationDistance = 0;
+    public float maxGenerationDistance = 0;
     public int minSections = 3;
     public int maxSections = 10;
     public Section[] sections;
@@ -18,11 +18,12 @@ public class Biome : ScriptableObject
         List<Section> validSections = new List<Section>();
         foreach (var section in sections)
         {
-            if (distance >= section.minBiomeSpawnDistance && distance <= section.maxBiomeSpawnDistance)
-            {
-                validSections.Add(section);
+            if (playerDistance < section.minGenerationDistance && playerDistance > section.maxGenerationDistance)
                 continue;
-            }
+            if (distance < section.minBiomeSpawnDistance && distance > section.maxBiomeSpawnDistance)
+                continue;
+
+            validSections.Add(section);
         }
 
         return sections[Random.Range(0, validSections.Count)];

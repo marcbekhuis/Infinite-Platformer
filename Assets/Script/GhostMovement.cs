@@ -27,7 +27,7 @@ public class GhostMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.gameEnded || GameManager.instance.gamePaused)
+        if (GameManager.instance.paused || GameManager.instance.ended)
             return;
 
         transform.LookAt(target.position + targetOffset);

@@ -99,21 +99,22 @@ public class Player : MonoBehaviour
             position = hits[0].point;
         }
 
-        this.transform.position = position;
+        rigidbody.position = position;
         Camera.main.transform.position = cameraSpawnOffset;
     }
 
     public void UpdateLogic()
     {
-        if (GameManager.instance.PlayerMovementBlocked)
+        rigidbody.isKinematic = GameManager.instance.paused;
+        if (GameManager.instance.ended || GameManager.instance.paused)
         {
             if (animator)
             {
                 animator.SetFloat("speed", 0);
             }
-            rigidbody.Sleep();
             return;
         }
+
         AirCheck();
         Jump();
         AirJump();

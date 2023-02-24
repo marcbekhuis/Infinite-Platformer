@@ -10,6 +10,8 @@ public class Section : MonoBehaviour
     public Transform end;
     public float minBiomeSpawnDistance;
     public float maxBiomeSpawnDistance;
+    public float minGenerationDistance = 0;
+    public float maxGenerationDistance = 0;
 
 #if UNITY_EDITOR
     [Header("Editor Tools")]

@@ -7,14 +7,15 @@ public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private Player player;
 
-    [HideInInspector] public bool gamePaused = false;
-    [HideInInspector] public bool gameEnded = false;
+    [HideInInspector] private bool gamePaused = false;
+    [HideInInspector] private bool gameEnded = false;
 
     [HideInInspector] public float playerDistance = 0;
     [HideInInspector] public float lastSavePlayerDistance = 0;
     [HideInInspector] public float lastSaveHeight = 0;
 
-    public bool PlayerMovementBlocked { get => gamePaused || gameEnded; }
+    public bool paused { get => gamePaused; }
+    public bool ended { get => gameEnded; }
 
     public delegate void MoveMapDelegate(Vector3 offset);
     public event MoveMapDelegate OnMoveMap = delegate { };

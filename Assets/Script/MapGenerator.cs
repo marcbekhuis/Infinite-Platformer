@@ -73,8 +73,13 @@ public class MapGenerator : Singleton<MapGenerator>
             if(distance >= biome.minGenerationDistance && distance <= biome.maxGenerationDistance)
                 validBiomes.Add(biome);
         }
+        Biome newBiome = validBiomes[Random.Range(0, validBiomes.Count)];
+        if (newBiome == lastBiome)
+            return lastBiome;
+
         biomeDistance = distance;
-        return validBiomes[Random.Range(0, validBiomes.Count)];
+        biomeSections = 0;
+        return newBiome;
     }
 
     public void GenerateSection()
@@ -110,7 +115,7 @@ public class MapGenerator : Singleton<MapGenerator>
         biomeSections++;
         lastSection = section;
         lastBiome = biome;
-        distance += section.end.position.x;
+        distance += section.end.localPosition.x;
     }
 
     private void OnContinueGame()
