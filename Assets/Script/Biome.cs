@@ -18,14 +18,14 @@ public class Biome : ScriptableObject
         List<Section> validSections = new List<Section>();
         foreach (var section in sections)
         {
-            if (playerDistance < section.minGenerationDistance && playerDistance > section.maxGenerationDistance)
+            if (playerDistance < section.minGenerationDistance || playerDistance > section.maxGenerationDistance)
                 continue;
-            if (distance < section.minBiomeSpawnDistance && distance > section.maxBiomeSpawnDistance)
+            if (distance < section.minBiomeSpawnDistance || distance > section.maxBiomeSpawnDistance)
                 continue;
 
             validSections.Add(section);
         }
 
-        return sections[Random.Range(0, validSections.Count)];
+        return validSections[Random.Range(0, validSections.Count)];
     }
 }
