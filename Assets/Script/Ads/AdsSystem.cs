@@ -33,15 +33,18 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
 
     public void InitializeAds()
     {
-        _gameId = (Application.platform == RuntimePlatform.IPhonePlayer)
-            ? iosGameID
-            : androidGameID;
-        _adUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
-            ? iosAdUnitId
-            : androidAdUnitId;
-        _rewardAdUnitId = (Application.platform == RuntimePlatform.IPhonePlayer)
-            ? rewardIosAdUnitId
-            : rewardAndroidAdUnitId;
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            _gameId = iosGameID;
+            _adUnitId = iosAdUnitId;
+            _rewardAdUnitId = rewardIosAdUnitId;
+        }
+        else
+        {
+            _gameId = androidGameID;
+            _adUnitId = androidAdUnitId;
+            _rewardAdUnitId = rewardAndroidAdUnitId;
+        }
 
         if (!Advertisement.isInitialized)
             Advertisement.Initialize(_gameId, testMode, this);
