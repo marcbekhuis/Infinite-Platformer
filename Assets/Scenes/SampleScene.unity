@@ -5159,12 +5159,12 @@ MonoBehaviour:
   airJumpCooldown: 1
   airJumps: 0
   airCheckOffset: {x: 0, y: 0, z: 0}
-  airCheckHalfSize: {x: 0.45, y: 0.1, z: 0.45}
+  airCheckHalfSize: {x: 0.1, y: 0.02, z: 0.1}
   groundLayers:
     serializedVersion: 2
     m_Bits: 64
-  saveGroundCheckOffsetRight: {x: 0.7, y: -0.1, z: 0}
-  saveGroundCheckOffsetLeft: {x: -0.7, y: -0.1, z: 0}
+  saveGroundCheckOffsetRight: {x: 0.6, y: -0.1, z: 0}
+  saveGroundCheckOffsetLeft: {x: -0.6, y: -0.1, z: 0}
   saveGroundCheckHalfSize: {x: 0.1, y: 0.1, z: 0.5}
   spawnPosition: {x: 0, y: 0.5, z: 0}
   spawnHeightCheckOffset: 3
@@ -9294,8 +9294,8 @@ RectTransform:
   m_Father: {fileID: 98380254}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.05075594, y: 0.049065422}
+  m_AnchorMax: {x: 0.9492441, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
