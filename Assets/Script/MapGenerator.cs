@@ -7,6 +7,7 @@ public class MapGenerator : Singleton<MapGenerator>
 {
     [SerializeField] private Transform target;
     [SerializeField] private float distanceFromEndToSpawn = 10;
+    [SerializeField] private float startDistance = -3;
     [SerializeField] private Biome[] biomes;
 
     private float distance = 0;
@@ -22,6 +23,7 @@ public class MapGenerator : Singleton<MapGenerator>
     {
         GameManager.instance.OnMoveMap += MoveMap;
         GameManager.instance.OnContinueGame += OnContinueGame;
+        SetValues();
         GenerateSection();
     }
 
@@ -40,14 +42,19 @@ public class MapGenerator : Singleton<MapGenerator>
         endMap.transform.Translate(offset);
     }
 
-    public void ResetMap()
+    private void SetValues()
     {
-        distance = 0;
+        distance = startDistance;
         biomeSections = 0;
         lastSection = null;
         lastBiome = null;
-        biomeDistance= 0;
-        lastGameObjectHeight= 0;
+        biomeDistance = 0;
+        lastGameObjectHeight = 0;
+    }
+
+    public void ResetMap()
+    {
+        SetValues();
 
         foreach (var section in sections)
         {
@@ -98,20 +105,26 @@ public class MapGenerator : Singleton<MapGenerator>
             if(endMap)
                 Destroy(endMap);
 
-            endMap = Instantiate(biome.endMap);
+            Vector3 postion;
+            if (lastSection)
+                postion = new Vector3(sections.First().transform.position.x, lastSection.start.localPosition.y, 0);
+            else
+                postion = new Vector3(distance, 0, 0);
+
+            endMap = Instantiate(biome.endMap, postion, new Quaternion(0, 0, 0, 0));
         }
-        if (lastSection)
         {
-            GameObject gameObject = Instantiate(section.gameObject, new Vector3(sections.Last().transform.position.x + lastSection.end.localPosition.x, lastSection.end.localPosition.y - section.start.localPosition.y + lastGameObjectHeight, 0), new Quaternion(0, 0, 0, 0));
+            Vector3 postion;
+            if (lastSection)
+                postion = new Vector3(sections.Last().transform.position.x + lastSection.end.localPosition.x, lastSection.end.localPosition.y - section.start.localPosition.y + lastGameObjectHeight, 0);
+            else
+                postion = new Vector3(distance, 0, 0);
+
+            GameObject gameObject = Instantiate(section.gameObject, postion, new Quaternion(0, 0, 0, 0));
             sections.Add(gameObject);
             lastGameObjectHeight = gameObject.transform.position.y;
         }
-        else
-        {
-            GameObject gameObject = Instantiate(section.gameObject, new Vector3(distance, 0, 0), new Quaternion(0, 0, 0, 0));
-            sections.Add(gameObject);
-            lastGameObjectHeight = gameObject.transform.position.y;
-        }
+
         biomeSections++;
         lastSection = section;
         lastBiome = biome;
