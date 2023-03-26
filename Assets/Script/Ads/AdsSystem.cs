@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Advertisements;
 
-public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsShowListener, IUnityAdsInitializationListener
+public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsInitializationListener
 {
     [SerializeField] private string androidGameID = "4459541";
     [SerializeField] private string iosGameID = "4459540";
@@ -17,9 +17,31 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
     [SerializeField] private string rewardIosAdUnitId = "Rewarded_iOS";
     public string _rewardAdUnitId { get;  private set; }
 
-    public delegate void AdComplited();
-    public event AdComplited onRewardCompleted = delegate { };
-    public event AdComplited onAdShowCompleted = delegate { };
+    public float periodicAdScore = 50;
+    public float periodicScoreDecrease = 50;
+    public float rewardScoreDecrease = 150;
+
+    private float adScoreVar = 0;
+
+    private Dictionary<string, IUnityAdsShowListener> listeners = new Dictionary<string, IUnityAdsShowListener>();
+
+    public  float adScore
+    {
+        get => adScoreVar;
+        set
+        {
+            adScoreVar = Mathf.Max(value, 0);
+            PlayerPrefs.SetFloat("adScore", adScoreVar);
+        }
+    }
+
+    public bool showAd { get => adScore > periodicAdScore; }
+
+    private void Start()
+    {
+        if (PlayerPrefs.HasKey("adScore"))
+            adScore = PlayerPrefs.GetFloat("adScore");
+    }
 
     protected override void Awake()
     {
@@ -31,7 +53,7 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
         }
     }
 
-    public void InitializeAds()
+    private void InitializeAds()
     {
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
@@ -61,10 +83,12 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
     }
 
     // Load content to the Ad Unit:
-    public void LoadAd(string adUnitId)
+    public void LoadAd(string adUnitId, IUnityAdsShowListener listener)
     {
         // IMPORTANT! Only load content AFTER initialization (in this example, initialization is handled in a different script).
         Debug.LogError("Loading Ad: " + adUnitId);
+
+        listeners.Add(adUnitId, listener);
         Advertisement.Load(adUnitId, this);
     }
 
@@ -73,7 +97,8 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
     {
         // Note that if the ad content wasn't previously loaded, this method will fail
         Debug.LogError("Showing Ad: " + adUnitId);
-        Advertisement.Show(adUnitId, this);
+        Advertisement.Show(adUnitId, listeners[adUnitId]);
+        listeners.Remove(adUnitId);
     }
 
     // Implement Load Listener and Show Listener interface methods: 
@@ -87,30 +112,5 @@ public class AdsSystem : Singleton<AdsSystem>, IUnityAdsLoadListener, IUnityAdsS
     {
         Debug.LogError($"Error loading Ad Unit: {adUnitId} - {error.ToString()} - {message}");
         // Optionally execute code if the Ad Unit fails to load, such as attempting to try again.
-    }
-
-    public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
-    {
-        Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
-        // Optionally execute code if the Ad Unit fails to show, such as loading another ad.
-    }
-
-    public void OnUnityAdsShowStart(string adUnitId) { }
-    public void OnUnityAdsShowClick(string adUnitId) { }
-    public void OnUnityAdsShowComplete(string adUnitId, UnityAdsShowCompletionState showCompletionState) 
-    {
-        onAdShowCompleted();
-        switch (showCompletionState)
-        {
-            case UnityAdsShowCompletionState.SKIPPED:
-                break;
-            case UnityAdsShowCompletionState.COMPLETED:
-                onRewardCompleted();
-                break;
-            case UnityAdsShowCompletionState.UNKNOWN:
-                break;
-            default:
-                break;
-        }
     }
 }

@@ -717,9 +717,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1587497840}
-        m_TargetAssemblyTypeName: PeriodicAds, Assembly-CSharp
-        m_MethodName: RetryPressed
+      - m_Target: {fileID: 785525984}
+        m_TargetAssemblyTypeName: RetryHandler, Assembly-CSharp
+        m_MethodName: ClickRetry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2443,9 +2443,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1587497840}
-        m_TargetAssemblyTypeName: PeriodicAds, Assembly-CSharp
-        m_MethodName: HomePressed
+      - m_Target: {fileID: 785525983}
+        m_TargetAssemblyTypeName: HomeHandler, Assembly-CSharp
+        m_MethodName: ClickHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3013,8 +3013,10 @@ GameObject:
   - component: {fileID: 785525978}
   - component: {fileID: 785525979}
   - component: {fileID: 785525980}
-  - component: {fileID: 785525981}
   - component: {fileID: 785525982}
+  - component: {fileID: 785525981}
+  - component: {fileID: 785525984}
+  - component: {fileID: 785525983}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3145,6 +3147,32 @@ MonoBehaviour:
   - {fileID: 585215679}
   - {fileID: 1822345082}
   - {fileID: 1491916545}
+--- !u!114 &785525983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785525974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b00cfea33fb0d5e43a4b76cf9f7852f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+--- !u!114 &785525984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785525974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ed0ee866dfd3345b2059031f973a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &823112582
 GameObject:
   m_ObjectHideFlags: 0
@@ -5405,9 +5433,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1587497840}
-        m_TargetAssemblyTypeName: PeriodicAds, Assembly-CSharp
-        m_MethodName: HomePressed
+      - m_Target: {fileID: 785525983}
+        m_TargetAssemblyTypeName: HomeHandler, Assembly-CSharp
+        m_MethodName: ClickHome
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6805,9 +6833,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1587497840}
-        m_TargetAssemblyTypeName: PeriodicAds, Assembly-CSharp
-        m_MethodName: RetryPressed
+      - m_Target: {fileID: 785525984}
+        m_TargetAssemblyTypeName: RetryHandler, Assembly-CSharp
+        m_MethodName: ClickRetry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7795,7 +7823,6 @@ GameObject:
   - component: {fileID: 1587497838}
   - component: {fileID: 1587497837}
   - component: {fileID: 1587497839}
-  - component: {fileID: 1587497840}
   m_Layer: 0
   m_Name: DontDestroy
   m_TagString: Untagged
@@ -7822,6 +7849,9 @@ MonoBehaviour:
   iosAdUnitId: Interstitial_iOS
   rewardAndroidAdUnitId: Rewarded_Android
   rewardIosAdUnitId: Rewarded_iOS
+  periodicAdScore: 50
+  periodicScoreDecrease: 50
+  rewardScoreDecrease: 150
 --- !u!4 &1587497838
 Transform:
   m_ObjectHideFlags: 0
@@ -7849,20 +7879,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 201bcdaaa9281464991480655f213707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1587497840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1587497836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae91997d618947846818f133ed4c6282, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showAdScore: 50
-  player: {fileID: 1269577482}
 --- !u!1 &1596180148
 GameObject:
   m_ObjectHideFlags: 0
@@ -9309,8 +9325,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 785525981}
-        m_TargetAssemblyTypeName: RespawnSystem, Assembly-CSharp
-        m_MethodName: RespawnPressed
+        m_TargetAssemblyTypeName: ContinueHandler, Assembly-CSharp
+        m_MethodName: ClickRespawn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
