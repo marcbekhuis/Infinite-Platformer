@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec0d32b077247fb986183802fdc0dec, type: 3}
+  m_Name: FullGrass
+  m_EditorClassIdentifier: 
+  layer: {fileID: 11400000, guid: 4a1ab32969bf15b4381127d20e86d5e6, type: 2}
+  defaultBlock: {fileID: 3500967640460159624, guid: 4eed31adb5b51834eacb53fbe15706ad, type: 3}
+  rules:
+  - grid: 000000000000000000000000010000000000000002000000000000000000000000000000
+    block: {fileID: 4592266310790953883, guid: 125a14015d784024aa177fde37d64ffe, type: 3}
+    transform: 2
+  - grid: 000000000000000000000000010000000000000001000000000000000000000000000000
+    block: {fileID: 3500967640460159624, guid: 4eed31adb5b51834eacb53fbe15706ad, type: 3}
+    transform: 0
+  - grid: 000000000000000000000000020000000000000002000000000000000000000000000000
+    block: {fileID: 4302516844431402676, guid: 69036c791bfe80645b3cdd7623f94b54, type: 3}
+    transform: 0
+  thumbnail: {fileID: 0}
