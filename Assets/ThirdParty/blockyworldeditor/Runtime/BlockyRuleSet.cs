@@ -44,7 +44,7 @@ namespace PeartreeGames.Blocky2DEditor
                             ruleNeighbours = RotateNeighbours(ruleNeighbours);
                             if (!rule.Matches(this, ruleNeighbours)) continue;
                             result = block;
-                            rotation = new Vector3(0, 0, i * 90);
+                            rotation = new Vector3(0, 0, i * -90);
                         }
                         break;
                     case BlockyTransform.MirrorX:
