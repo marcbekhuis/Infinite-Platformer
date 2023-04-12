@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: bPalette_
   m_EditorClassIdentifier: 
   blocks:
-  - {fileID: 11400000, guid: 4b1e928101874204aadb06fb30432828, type: 2}
+  - {fileID: 11400000, guid: ce0fdd19126adbe42ba24e9680ac5633, type: 2}
   - {fileID: 11400000, guid: 41984281e635ace4584ad986eb32c3bc, type: 2}
