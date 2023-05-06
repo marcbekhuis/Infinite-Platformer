@@ -1711,6 +1711,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Subscriptions:
   - {fileID: 2100000, guid: 6f9c6d7930d729348b40a15ebbe30ad2, type: 2}
+  - {fileID: 2100000, guid: c4ffedcfd32334542a18737a989c9820, type: 2}
 --- !u!4 &527619317
 Transform:
   m_ObjectHideFlags: 0
