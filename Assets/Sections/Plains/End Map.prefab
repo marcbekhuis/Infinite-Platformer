@@ -289,7 +289,7 @@ Transform:
   - {fileID: 1664814824660148495}
   - {fileID: 3101185664733911483}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6072917875151096208
 GameObject:
@@ -882,7 +882,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5433191948846567872, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Size.x
-      value: 2.599999
+      value: 2.2999995
       objectReference: {fileID: 0}
     - target: {fileID: 5433191948846567872, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Size.z
@@ -890,7 +890,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5433191948846567872, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Center.x
-      value: 0.5
+      value: 0.35000026
       objectReference: {fileID: 0}
     - target: {fileID: 5433191948846567872, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Center.z
@@ -899,7 +899,7 @@ PrefabInstance:
     - target: {fileID: 5433191948846567873, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: 1eab20472a46ad642a8a14271b0ddc12, type: 2}
+      objectReference: {fileID: 4300000, guid: 417b2390038ac6f41b8456a03834ea6e, type: 2}
     - target: {fileID: 5433191949780384508, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Name
       value: Segment
@@ -917,8 +917,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5433191949780384510, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
+      propertyPath: floorRightEdge
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5433191949780384510, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: bottomRightEdge
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5433191949780384511, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_RootOrder
@@ -974,7 +978,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5433191950297635337, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Center.x
-      value: 0.49999997
+      value: 0.4999999
       objectReference: {fileID: 0}
     - target: {fileID: 5433191950297635337, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Center.z
@@ -983,7 +987,7 @@ PrefabInstance:
     - target: {fileID: 5433191950297635350, guid: 95f0817c98477e546833401164a9c9b2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 4300000, guid: ca39ed69f3bfa974b9628bb9e2e4ff08, type: 2}
+      objectReference: {fileID: 4300000, guid: c917d14f2b16cf940ace005c8981be63, type: 2}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 95f0817c98477e546833401164a9c9b2, type: 3}

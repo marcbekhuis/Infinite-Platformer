@@ -6,7 +6,7 @@ using UnityEngine.Splines;
 [ExecuteInEditMode]
 public class CoinsSpline : MonoBehaviour
 {
-    [SerializeField] private bool update = true;
+    [SerializeField] private bool update = false;
     [SerializeField] private float distanceBetweenCoins = 5;
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private SplineContainer splineContainer;
@@ -17,9 +17,12 @@ public class CoinsSpline : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!update)
+            return;
+
         float length = splineContainer.Spline.GetLength();
 
-        if (length != oldLength || oldDistanceBetween != distanceBetweenCoins || update) {
+        if (length != oldLength || oldDistanceBetween != distanceBetweenCoins) {
 
             foreach (Transform child in this.transform)
             {

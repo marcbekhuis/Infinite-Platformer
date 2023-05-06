@@ -26,6 +26,7 @@ public class Biome : ScriptableObject
             validSections.Add(section);
         }
 
+        Debug.LogError("Valid Sections: " + validSections.Count);
         return validSections[Random.Range(0, validSections.Count)];
     }
 }

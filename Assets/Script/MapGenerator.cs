@@ -76,10 +76,10 @@ public class MapGenerator : Singleton<MapGenerator>
         {
             if (biomeSections >= biome.maxSections && biome == lastBiome)
                 continue;
-
             if(distance >= biome.minGenerationDistance && distance <= biome.maxGenerationDistance)
                 validBiomes.Add(biome);
         }
+        Debug.LogError("Valid biomes: " + validBiomes.Count);
         Biome newBiome = validBiomes[Random.Range(0, validBiomes.Count)];
         if (newBiome == lastBiome)
             return lastBiome;
@@ -100,6 +100,7 @@ public class MapGenerator : Singleton<MapGenerator>
 
         Biome biome = GetValidBiome();
         Section section = biome.GetSection(distance, biomeDistance);
+        Debug.LogError(section.name);
         if(biome != lastBiome)
         {
             if(endMap)
@@ -107,7 +108,7 @@ public class MapGenerator : Singleton<MapGenerator>
 
             Vector3 postion;
             if (lastSection)
-                postion = new Vector3(sections.First().transform.position.x, lastSection.start.localPosition.y, 0);
+                postion = new Vector3(sections.First().transform.position.x, lastSection.start.y, 0);
             else
                 postion = new Vector3(distance, 0, 0);
 
@@ -116,7 +117,7 @@ public class MapGenerator : Singleton<MapGenerator>
         {
             Vector3 postion;
             if (lastSection)
-                postion = new Vector3(sections.Last().transform.position.x + lastSection.end.localPosition.x, lastSection.end.localPosition.y - section.start.localPosition.y + lastGameObjectHeight, 0);
+                postion = new Vector3(sections.Last().transform.position.x + lastSection.end.x, lastSection.end.y - section.start.y + lastGameObjectHeight, 0);
             else
                 postion = new Vector3(distance, 0, 0);
 
@@ -128,7 +129,7 @@ public class MapGenerator : Singleton<MapGenerator>
         biomeSections++;
         lastSection = section;
         lastBiome = biome;
-        distance += section.end.localPosition.x;
+        distance += section.end.x;
     }
 
     private void OnContinueGame()
