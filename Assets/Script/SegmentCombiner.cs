@@ -1,12 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using System.IO;
 
 [ExecuteInEditMode]
 public class SegmentCombiner : MonoBehaviour
 {
     [SerializeField] private Vector3Int size;
     [SerializeField] private bool update = false;
+    [SerializeField] private bool floor = true;
+    [SerializeField] private bool floorLeftEdge = true;
+    [SerializeField] private bool floorRightEdge = true;
+    [SerializeField] private bool bottomLeftEdge = true;
+    [SerializeField] private bool bottomRightEdge = true;
+    [SerializeField] private string path;
+    [SerializeField] private string fileName;
     [Header("Mesh filters")]
     [SerializeField] private MeshFilter floorMeshFilter;
     [SerializeField] private MeshFilter bottomMeshFilter;
@@ -37,87 +46,133 @@ public class SegmentCombiner : MonoBehaviour
     #region Visual
     private void UpdateVisual()
     {
-        List<CombineInstance> floorCombine = new List<CombineInstance>();
-        List<CombineInstance> bottomCombine = new List<CombineInstance>();
+        string systemPath = $"{Application.dataPath}/{path}";
 
-        Quaternion rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+        Directory.CreateDirectory(systemPath);
 
-        for (int y = 0; y < size.y; y++)
+        FloorPiece();
+        BottomPiece(); 
+    }
+
+    private void FloorPiece()
+    {
+        string floorPath = $"Assets/{path}/{fileName}_floor_{size.x}x{size.z}_{floorRightEdge}_{floorLeftEdge}.asset";
+
+        Mesh floorMesh = AssetDatabase.LoadAssetAtPath<Mesh>(floorPath);
+        if (floorMesh)
         {
+            floorMeshFilter.sharedMesh = floorMesh;
+            return;
+        }
+        if (!floor)
+        {
+            floorMeshFilter.sharedMesh = null;
+        }
+
+        List<CombineInstance> floorCombine = new List<CombineInstance>();
+        Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        Mesh segmentPrefab = floorCenterSegment;
+        Vector3 scale = Vector3.one;
+
+        for (int x = 0; x < size.x; x++)
+        {
+            if (x == size.x - 1)
+                scale = new Vector3(-1, 1, 1);
             for (int z = 0; z < size.z; z++)
             {
-                for (int x = 0; x < size.x; x++)
+
+                if (x == 0 && floorLeftEdge)
+                    segmentPrefab = z == 0 ? floorEdgeSegment : floorEdgeBackSegment;
+                else if (x == size.x - 1 && floorRightEdge)
+                    segmentPrefab = z == 0 ? floorEdgeSegment : floorEdgeBackSegment;
+                else
+                    segmentPrefab = z == 0 ? floorCenterSegment : floorCenterBackSegment;
+
+                if (segmentPrefab)
                 {
-                    FloorPiece(x, y, z, floorCombine, rotation);
-                    BottomPiece(x, y, z, bottomCombine, rotation);
+                    CombineInstance combineInstance = new CombineInstance();
+                    combineInstance.mesh = segmentPrefab;
+                    Matrix4x4 matrix4X4 = new Matrix4x4();
+                    matrix4X4.SetTRS(new Vector3(x, 0, z), rotation, scale);
+                    combineInstance.transform = matrix4X4;
+
+                    floorCombine.Add(combineInstance);
                 }
             }
         }
 
-        if (floorCombine.Count > 0 && floorMeshFilter)
+        if (floorCombine.Count > 0)
         {
             Mesh floor = new Mesh();
             floor.CombineMeshes(floorCombine.ToArray());
-            floorMeshFilter.sharedMesh = floor;
+            AssetDatabase.CreateAsset(floor, floorPath);
+            AssetDatabase.SaveAssets();
+            Mesh savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(floorPath);
+            floorMeshFilter.sharedMesh = savedMesh;
         }
-        if (bottomCombine.Count > 0 && bottomMeshFilter)
+        else
+        {
+            floorMeshFilter.sharedMesh = null;
+        }
+    }
+
+    private void BottomPiece()
+    {
+        string bottomPath = $"Assets/{path}/{fileName}_bottom_{size.x}x{size.y}x{size.z}_{bottomRightEdge}_{bottomLeftEdge}.asset";
+        Mesh bottomMesh = AssetDatabase.LoadAssetAtPath<Mesh>(bottomPath);
+        if (bottomMesh)
+        {
+            bottomMeshFilter.sharedMesh = bottomMesh;
+            return;
+        }
+
+        List<CombineInstance> bottomCombine = new List<CombineInstance>();
+        Quaternion rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        Mesh segmentPrefab = floorCenterSegment;
+        Vector3 scale = Vector3.one;
+
+        for (int x = 0; x < size.x; x++)
+        {
+            if (x == size.x - 1)
+                scale = new Vector3(-1, 1, 1);
+            for (int y = 0; y < size.y; y++)
+            {
+                for (int z = 0; z < size.z; z++)
+                {
+
+                    if (x == 0 && bottomLeftEdge)
+                        segmentPrefab = z == 0 ? bottomEdgeSegment : bottomEdgeBackSegment;
+                    else if (x == size.x - 1 && bottomRightEdge)
+                        segmentPrefab = z == 0 ? bottomEdgeSegment : bottomEdgeBackSegment;
+                    else
+                        segmentPrefab = z == 0 ? bottomCenterSegment : null;
+
+                    if (segmentPrefab)
+                    {
+                        CombineInstance combineInstance = new CombineInstance();
+                        combineInstance.mesh = segmentPrefab;
+                        Matrix4x4 matrix4X4 = new Matrix4x4();
+                        matrix4X4.SetTRS(new Vector3(x, -y, z), rotation, scale);
+                        combineInstance.transform = matrix4X4;
+
+                        bottomCombine.Add(combineInstance);
+                    }
+                }
+            }
+        }
+
+        if (bottomCombine.Count > 0)
         {
             Mesh bottom = new Mesh();
             bottom.CombineMeshes(bottomCombine.ToArray());
-            bottomMeshFilter.sharedMesh = bottom;
+            AssetDatabase.CreateAsset(bottom, bottomPath);
+            AssetDatabase.SaveAssets();
+            Mesh savedMesh = AssetDatabase.LoadAssetAtPath<Mesh>(bottomPath);
+            bottomMeshFilter.sharedMesh = savedMesh;
         }
-    }
-
-    private void FloorPiece(int x, int y, int z, List<CombineInstance> floorCombine, Quaternion rotation)
-    {
-        if (y != 0)
-            return;
-
-        Mesh segmentPrefab = floorCenterSegment;
-        Vector3 scale = Vector3.one;
-
-            if (x == 0 || x == size.x - 1)
-                segmentPrefab = z == 0 ? floorEdgeSegment : floorEdgeBackSegment;
-            else
-                segmentPrefab = z == 0 ? floorCenterSegment : floorCenterBackSegment;
-
-        if (x == size.x - 1)
-            scale = new Vector3(-1, 1, 1);
-
-        if (segmentPrefab)
-        {
-            CombineInstance combineInstance = new CombineInstance();
-            combineInstance.mesh = segmentPrefab;
-            Matrix4x4 matrix4X4 = new Matrix4x4();
-            matrix4X4.SetTRS(new Vector3(x, y, z), rotation, scale);
-            combineInstance.transform = matrix4X4;
-
-            floorCombine.Add(combineInstance);
-        }
-    }
-
-    private void BottomPiece(int x, int y, int z, List<CombineInstance> bottomCombine, Quaternion rotation)
-    {
-        Mesh segmentPrefab = floorCenterSegment;
-        Vector3 scale = Vector3.one;
-
-        if (x == 0 || x == size.x - 1)
-            segmentPrefab = z == 0 ? bottomEdgeSegment : bottomEdgeBackSegment;
         else
-            segmentPrefab = z == 0 ? bottomCenterSegment : null;
-
-        if (x == size.x - 1)
-            scale = new Vector3(-1, 1, 1);
-
-        if (segmentPrefab)
         {
-            CombineInstance combineInstance = new CombineInstance();
-            combineInstance.mesh = segmentPrefab;
-            Matrix4x4 matrix4X4 = new Matrix4x4();
-            matrix4X4.SetTRS(new Vector3(x, -y, z), rotation, scale);
-            combineInstance.transform = matrix4X4;
-
-            bottomCombine.Add(combineInstance);
+            bottomMeshFilter.sharedMesh = null;
         }
     }
     #endregion
@@ -126,14 +181,18 @@ public class SegmentCombiner : MonoBehaviour
     {
         if (floorCollider && floorMeshFilter)
         {
-            floorCollider.center = floorMeshFilter.mesh.bounds.center;
-            floorCollider.size = floorMeshFilter.mesh.bounds.size;
+            floorCollider.gameObject.SetActive(floor);
+            if (floor)
+            {
+                floorCollider.center = floorMeshFilter.sharedMesh.bounds.center;
+                floorCollider.size = floorMeshFilter.sharedMesh.bounds.size;
+            }
         }
 
         if (bottomCollider && bottomMeshFilter)
         {
-            bottomCollider.center = bottomMeshFilter.mesh.bounds.center;
-            bottomCollider.size = bottomMeshFilter.mesh.bounds.size;
+            bottomCollider.center = bottomMeshFilter.sharedMesh.bounds.center;
+            bottomCollider.size = bottomMeshFilter.sharedMesh.bounds.size;
         }
     }
 }

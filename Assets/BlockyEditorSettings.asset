@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68c2f971812c46e28c2bd15ab9364a00, type: 3}
   m_Name: BlockyEditorSettings
   m_EditorClassIdentifier: 
-  target: {x: 10, y: 21, z: 0}
+  target: {x: 24, y: 7, z: 0}
   editMode: 0
   gridDepth: 0
-  rotation: {x: 0, y: 360, z: 0}
+  rotation: {x: 0, y: 360, z: 90}
   randomRotation: 0
   brushSize: 0
   palette: {fileID: 11400000, guid: 3513964cd82895f45b8d171b0b928cdc, type: 2}
