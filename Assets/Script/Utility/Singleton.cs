@@ -9,7 +9,9 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     protected virtual void Awake()
     {
-        if (instance != null) Destroy(this);
+        if (instance != null) WhenSingletonInstanceAlreadyExists();
         else instance = FindObjectOfType<T>();
     }
+
+    protected virtual void WhenSingletonInstanceAlreadyExists() => Destroy(this);
 }

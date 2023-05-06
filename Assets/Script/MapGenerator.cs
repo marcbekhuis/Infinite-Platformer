@@ -18,6 +18,7 @@ public class MapGenerator : Singleton<MapGenerator>
     private float lastGameObjectHeight;
     private List<GameObject> sections = new List<GameObject>();
     private GameObject endMap;
+    private Vector3 offset = default;
 
     private void Start()
     {
@@ -40,7 +41,8 @@ public class MapGenerator : Singleton<MapGenerator>
             section.transform.Translate(offset);
         }
         endMap.transform.Translate(offset);
-    }
+        MaterialTranslator.instance.SetOffset(-(this.offset += offset));
+    }   
 
     private void SetValues()
     {

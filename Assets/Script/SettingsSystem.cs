@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SettingsSystem : Singleton<SettingsSystem>
 {
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this);
