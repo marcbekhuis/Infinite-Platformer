@@ -73,6 +73,9 @@ public class MapGenerator : Singleton<MapGenerator>
             if (biomeSections < lastBiome.minSections)
                 return lastBiome;
 
+        if (biomes.Length == 1)
+            return biomes[0];
+
         List<Biome> validBiomes = new List<Biome>();
         foreach (var biome in biomes)
         {
@@ -81,7 +84,6 @@ public class MapGenerator : Singleton<MapGenerator>
             if(distance >= biome.minGenerationDistance && distance <= biome.maxGenerationDistance)
                 validBiomes.Add(biome);
         }
-        Debug.LogError("Valid biomes: " + validBiomes.Count);
         Biome newBiome = validBiomes[Random.Range(0, validBiomes.Count)];
         if (newBiome == lastBiome)
             return lastBiome;
@@ -101,8 +103,7 @@ public class MapGenerator : Singleton<MapGenerator>
         }
 
         Biome biome = GetValidBiome();
-        Section section = biome.GetSection(distance, biomeDistance);
-        Debug.LogError(section.name);
+        Section section = biome.GetSection(distance, biomeDistance, lastSection);
         if(biome != lastBiome)
         {
             if(endMap)

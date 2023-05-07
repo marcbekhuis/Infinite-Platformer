@@ -24,11 +24,6 @@ public class CoinsSpline : MonoBehaviour
 
         if (length != oldLength || oldDistanceBetween != distanceBetweenCoins) {
 
-            foreach (Transform child in this.transform)
-            {
-                DestroyImmediate(child.gameObject);
-            }
-
             int amount = Mathf.FloorToInt(length / distanceBetweenCoins);
             float coinDistance = length / amount;
 

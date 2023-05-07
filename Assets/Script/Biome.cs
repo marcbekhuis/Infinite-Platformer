@@ -12,12 +12,14 @@ public class Biome : ScriptableObject
     public Section[] sections;
     public GameObject endMap;
 
-    public Section GetSection(float playerDistance, float biomeDistance)
+    public Section GetSection(float playerDistance, float biomeDistance, Section lastSection)
     {
         float distance = playerDistance - biomeDistance;
         List<Section> validSections = new List<Section>();
         foreach (var section in sections)
         {
+            if (section == lastSection)
+                continue;
             if (playerDistance < section.minGenerationDistance || playerDistance > section.maxGenerationDistance)
                 continue;
             if (distance < section.minBiomeSpawnDistance || distance > section.maxBiomeSpawnDistance)
@@ -26,7 +28,6 @@ public class Biome : ScriptableObject
             validSections.Add(section);
         }
 
-        Debug.LogError("Valid Sections: " + validSections.Count);
         return validSections[Random.Range(0, validSections.Count)];
     }
 }

@@ -114,6 +114,6 @@ Material:
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _Vector1: {r: 0, g: 0, b: 0, a: 0}
-    - _offset: {r: 0, g: -0, b: -0, a: 0}
+    - _offset: {r: 146.96436, g: -0, b: -0, a: 0}
     - _offset1: {r: 2.51, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
