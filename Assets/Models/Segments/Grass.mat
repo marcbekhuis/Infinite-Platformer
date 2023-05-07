@@ -138,5 +138,5 @@ Material:
     - _MainColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularColor: {r: 0.3921569, g: 0.3921569, b: 0.3921569, a: 1}
-    - _offset: {r: 116.25347, g: -0, b: -0, a: 0}
+    - _offset: {r: 12.993829, g: -0, b: -0, a: 0}
   m_BuildTextureStacks: []

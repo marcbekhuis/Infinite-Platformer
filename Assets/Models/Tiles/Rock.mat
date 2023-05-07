@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Rock
-  m_Shader: {fileID: 4800000, guid: 3fc5d38c90de9f141b6924f6c7c71d2c, type: 3}
+  m_Shader: {fileID: 4800000, guid: 26231f84d828a6a4393eb8cc862a03ab, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,6 +23,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: e4f6cf84244216540b767e686306538b, type: 3}
+        m_Scale: {x: 0.3, y: 0.3}
+        m_Offset: {x: 0, y: 0}
     - _AmbientOcclusion:
         m_Texture: {fileID: 2800000, guid: e5dc557523db7954a93df9836f52b2a9, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -85,14 +89,18 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HeightScale: 1
+    - _Heightmidlevel: 0.5
     - _Metallic: 0
     - _MidLevel: 0.25
     - _Mode: 0
     - _NormalIntensity: 1
+    - _NormalScale: 1
     - _OcclusionStrength: 1
     - _OffsetScale: 0.5
     - _Parallax: 0.02
     - _RougnessScale: 0
+    - _Smoothness: 0.01
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -105,5 +113,5 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _offset: {r: 116.25347, g: -0, b: -0, a: 0}
+    - _offset: {r: 12.993829, g: -0, b: -0, a: 0}
   m_BuildTextureStacks: []
